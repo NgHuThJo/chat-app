@@ -1,0 +1,94 @@
+/* Flex */
+.flex,
+.flex-col,
+.flex-grid,
+.flex-group,
+.flex-wrap {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+/* Common Flex layout patterns */
+.flex-grid {
+  flex-wrap: wrap;
+
+  > * {
+    flex-grow: 1;
+  }
+}
+
+.flex-group {
+  flex-wrap: wrap;
+  width: fit-content;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+/* Grid */
+.auto-grid,
+.grid,
+.grid-stack,
+.macro-grid {
+  display: grid;
+}
+
+/* Common Grid layout patterns */
+.auto-grid {
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--auto-grid-column-size), 100%), 1fr)
+  );
+}
+
+.grid-stack {
+  > * {
+    grid-area: 1 / 1;
+  }
+}
+
+.macro-grid {
+  grid-template-columns:
+    [full-width-start breakout-left-start] minmax(
+      var(--macro-grid-padding-inline),
+      1fr
+    )
+    [breakout-start breakout-right-start] minmax(
+      0,
+      var(--macro-grid-breakout-column-width)
+    )
+    [content-start] min(
+      100% - 2 * var(--macro-grid-padding-inline),
+      var(--macro-grid-content-max-width)
+    )
+    [content-end]
+    minmax(0, var(--macro-grid-breakout-column-width))
+    [breakout-end breakout-left-end]
+    minmax(var(--macro-grid-padding-inline), 1fr)
+    [full-width-end breakout-right-end];
+}
+
+/* Macro grid related utility classes */
+.full-width {
+  grid-column: full-width;
+}
+
+.breakout {
+  grid-column: breakout;
+}
+
+.breakout-left {
+  grid-column: breakout-left;
+}
+
+.breakout-right {
+  grid-column: breakout-right;
+}
+
+.content {
+  grid-column: content;
+}

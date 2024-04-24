@@ -1,0 +1,75 @@
+/* Custom properties */
+:root {
+  /* Box model */
+  --width-content: 100rem;
+  --flow-spacing: 1em;
+  --padding-container: 2rem;
+
+  /* Grid */
+  --auto-grid-column-size: 20rem;
+
+  --macro-grid-breakout-max-width: 80rem;
+  --macro-grid-content-max-width: 60rem;
+  --macro-grid-breakout-column-width: calc(
+    (var(--macro-grid-breakout-max-width) - var(--macro-grid-content-max-width)) /
+      2
+  );
+  --macro-grid-padding-inline: 2rem;
+
+  /* Typography */
+  --ff-body: system-ui, sans-serif;
+
+  --fw-body: 400;
+  --fw-button: 700;
+
+  --fs-body: 1rem;
+
+  /* Colors */
+  --bgc-button-cta: 180 50% 50%;
+  --bgc-nav: 240 25% 50%;
+
+  /* Transition */
+  --transition-duration: 0.5s;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+}
+
+body {
+  flex-grow: 1;
+  font-family: var(--ff-body);
+  font-weight: var(--fw-body);
+  font-size: var(--fs-body);
+}
+
+button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+input {
+  text-align: right;
+}
+
+ol,
+ul {
+  list-style: none;
+}

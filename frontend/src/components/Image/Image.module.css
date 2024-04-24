@@ -1,0 +1,13 @@
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: fill;
+}
+
+.image--icon {
+  min-width: var(--min-width-icon);
+}
+
+.image--logo {
+  min-width: var(--min-width-logo);
+}
