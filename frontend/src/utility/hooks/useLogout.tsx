@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useApiContext } from "../context/ApiContext";
-import { useLoginDispatchContext } from "../context/LoginContext";
+import { useLoginDispatchContext } from "../context/AuthContext";
 import useFetch from "./useFetch";
 
 function useLogout() {

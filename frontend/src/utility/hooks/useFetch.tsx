@@ -4,9 +4,9 @@ import { useState } from "react";
 import { GeneralObject } from "../types/utilityType";
 
 function useFetch() {
-  const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<Object>();
+  const [error, setError] = useState<Error>();
+  const [loading, setLoading] = useState<boolean>(true);
 
   const fetchData = async (url: string, options?: GeneralObject) => {
     try {
@@ -15,8 +15,8 @@ function useFetch() {
         ...options,
       });
 
-      if (response.status >= 400) {
-        throw new Error("Server error");
+      if (!response.ok) {
+        throw new Error(`${response.status}: ${response.statusText}`);
       }
 
       const json = await response.json();
@@ -24,7 +24,7 @@ function useFetch() {
 
       return json;
     } catch (error) {
-      setError(error);
+      setError(error as Error);
     } finally {
       setLoading(false);
     }

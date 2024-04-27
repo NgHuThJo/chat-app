@@ -1,5 +1,5 @@
 import { createContext, useContext, useMemo } from "react";
-import { ContextProps } from "../types/utilityType";
+import { ComponentBaseProps } from "../types/utilityType";
 
 // Context creators
 const ApiContext = createContext<object>({});
@@ -9,7 +9,7 @@ function useApiContext() {
   return useContext(ApiContext);
 }
 
-function ApiContextProvider({ children }: ContextProps) {
+function ApiContextProvider({ children }: ComponentBaseProps) {
   const apiBaseUrl = "http://localhost:3000";
 
   const contextValue = useMemo(

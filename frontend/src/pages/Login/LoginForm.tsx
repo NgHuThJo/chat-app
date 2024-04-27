@@ -2,7 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 // Contexts
 import { useApiContext } from "../../utility/context/ApiContext";
-import { useLoginDispatchContext } from "../../utility/context/LoginContext";
+import { useLoginDispatchContext } from "../../utility/context/AuthContext";
 // Custom hooks
 import useFetch from "../../utility/hooks/useFetch";
 // Components

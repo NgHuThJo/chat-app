@@ -7,10 +7,6 @@ export type Position = {
   y: number;
 };
 
-export interface Position3D extends Position {
-  z: number;
-}
-
 export type ComponentBaseProps = {
   children?: React.ReactNode;
   className?: string;

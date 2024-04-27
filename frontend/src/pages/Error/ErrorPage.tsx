@@ -1,15 +1,11 @@
 // Third party
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+// Types
+import { ComponentBaseProps } from "../../utility/types/utilityType";
 // Styles
 import styles from "./ErrorPage.module.css";
 
-interface ErrorPageProps {
-  className?: string;
-  restProps?: object;
-}
-
-function ErrorPage({ className, ...restProps }: ErrorPageProps) {
+function ErrorPage({ className, ...restProps }: ComponentBaseProps) {
   return (
     <div className={styles[className!]} {...restProps}>
       <h1>Oh no, this route doesn&apos;t exist!</h1>
@@ -19,10 +15,5 @@ function ErrorPage({ className, ...restProps }: ErrorPageProps) {
     </div>
   );
 }
-
-ErrorPage.propTypes = {
-  className: PropTypes.string,
-  restProps: PropTypes.object,
-};
 
 export default ErrorPage;
