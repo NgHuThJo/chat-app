@@ -5,15 +5,25 @@ import useFetch from "../../utility/hooks/useFetch";
 // Components
 import List from "../../components/List/List";
 // Types
-import { ComponentBaseProps } from "../../utility/types/utilityType";
+import {
+  ComponentBaseProps,
+  GeneralObject,
+} from "../../utility/types/utilityType";
+
+const data: GeneralObject[] = [
+  {
+    id: 1,
+    username: "JohnDoe",
+    score: 200,
+  },
+];
 
 function Leaderboard({ className = "list--leaderboard" }: ComponentBaseProps) {
-  const { data, error, loading, fetchData } = useFetch();
+  const { error, loading, fetchData } = useFetch();
 
   useEffect(() => {
-    fetchData("string");
-
-    console.log(data);
+    // fetchData("string");
+    // console.log(data);
   }, []);
 
   if (error) {

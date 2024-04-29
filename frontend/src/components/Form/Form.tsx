@@ -8,13 +8,19 @@ import styles from "./Form.module.css";
 
 interface FormProps extends GeneralObject {
   fields: GeneralObject[];
-  handleSubmit(
-    formData: GeneralObject,
-    event: React.FormEvent<HTMLFormElement>
+  onSubmit(
+    event: React.FormEvent<HTMLFormElement>,
+    formData: GeneralObject
   ): void;
 }
 
-function Form({ className, fields, handleSubmit, ...restProps }: FormProps) {
+function Form({
+  children,
+  className,
+  fields,
+  onSubmit,
+  ...restProps
+}: FormProps) {
   const [formData, setFormData] = useState<GeneralObject>({});
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +31,7 @@ function Form({ className, fields, handleSubmit, ...restProps }: FormProps) {
   return (
     <form
       className={styles[className!]}
-      onSubmit={(event) => handleSubmit(formData, event)}
+      onSubmit={(event) => onSubmit(event, formData)}
       {...restProps}
     >
       {fields.map((field, index) => {
@@ -38,6 +44,7 @@ function Form({ className, fields, handleSubmit, ...restProps }: FormProps) {
           </Fragment>
         );
       })}
+      {children}
     </form>
   );
 }

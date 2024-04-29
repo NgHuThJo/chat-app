@@ -3,7 +3,16 @@ import { ComponentBaseProps } from "../../utility/types/utilityType";
 // Styles
 import styles from "./Button.module.css";
 
-function Button({ children, className, ...restProps }: ComponentBaseProps) {
+type ButtonProps = ComponentBaseProps & {
+  type?: string;
+};
+
+function Button({
+  children,
+  className,
+  type = "submit",
+  ...restProps
+}: ButtonProps) {
   return (
     <button className={styles[className!]} {...restProps}>
       {children}

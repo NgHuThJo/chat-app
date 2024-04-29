@@ -1,5 +1,6 @@
 // Third party
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 // Contexts
 import { useApiContext } from "./ApiContext.tsx";
 // Custom hooks
@@ -23,6 +24,8 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
   const [isUserLogged, setIsUserLogged] = useState(false);
   // Context
   const { apiBaseUrl } = useApiContext() as { apiBaseUrl: string };
+  // React Router
+  const navigate = useNavigate();
   // Custom hook
   const { fetchData } = useFetch();
 
@@ -42,15 +45,20 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       event.preventDefault();
 
       // Current implementation might return JSON or undefined
-      const serverResponse = await fetchData(`${apiBaseUrl}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      // const serverResponse = await fetchData(`${apiBaseUrl}/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(formData),
+      // });
 
       // TODO: implement how frontend handles serverResponse by either logging in user or showing error
+
+      // MOCK IMPLEMENTATION OF LOGIN
+      setIsUserLogged(true);
+      console.log("User logged in");
+      navigate("/");
     };
 
     const handleLogout = () => {

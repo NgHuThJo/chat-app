@@ -2,11 +2,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Components
 import App from "../App.jsx";
+import Authentication from "./Authentication/Authentication.js";
 import ErrorPage from "./Error/ErrorPage.js";
 import Home from "./Home/Home.js";
-import Game from "./Game/Game.js";
-import Leaderboard from "./Leaderboard/Leaderboard.js";
-import UploadForm from "./Upload/UploadForm.js";
+import Leaderboard from "./Leaderboard/Leaderboard";
+import LoginForm from "./Login/LoginForm.js";
 
 function Router() {
   // Paths are case-insensitive, isSensitive prop of Route component has value false by default
@@ -21,16 +21,18 @@ function Router() {
           element: <Home />,
         },
         {
-          path: "upload",
-          element: <UploadForm />,
-        },
-        {
-          path: "game/:id",
-          element: <Game />,
+          path: "login",
+          element: <LoginForm />,
         },
         {
           path: "leaderboard",
-          element: <Leaderboard />,
+          element: <Authentication />,
+          children: [
+            {
+              index: true,
+              element: <Leaderboard />,
+            },
+          ],
         },
       ],
     },
