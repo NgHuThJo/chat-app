@@ -5,6 +5,7 @@ import { ApiContextProvider } from "./utility/context/ApiContext.js";
 import { AuthContextProvider } from "./utility/context/AuthContext.js";
 // Custom hooks
 // Components
+import Main from "./components/Main/Main.js";
 import Navigation from "./components/Navigation/Navigation.js";
 
 function App() {
@@ -12,15 +13,17 @@ function App() {
     // ApiContextProvider needs to be top-level because other contexts rely on it
     <ApiContextProvider>
       <AuthContextProvider>
-        <Navigation className="navigation">
-          <Link to="/">Home</Link>
-          <Link to="login">Login</Link>
-          <Link to="leaderboard">Show leaderboard</Link>
-        </Navigation>
-        <main className="container">
+        <Navigation className="header">
           <h1>Chat App</h1>
+          <div>
+            <Link to="/">Home</Link>
+            <Link to="login">Login</Link>
+            <Link to="signup">Sign up</Link>
+          </div>
+        </Navigation>
+        <Main className="home">
           <Outlet />
-        </main>
+        </Main>
       </AuthContextProvider>
     </ApiContextProvider>
   );

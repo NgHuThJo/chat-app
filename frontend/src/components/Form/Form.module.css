@@ -1,5 +1,8 @@
-.form--signup {
-  input {
-    padding: 1rem;
+.login,
+.signup {
+  composes: grid from global;
+
+  > :not(:first-child) {
+    margin-top: 1em;
   }
 }

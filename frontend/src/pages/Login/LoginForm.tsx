@@ -32,19 +32,19 @@ function LoginForm() {
 
   return (
     <>
-      <h1>Login Form</h1>
+      <h1>Login to your account</h1>
       <Form
         method="post"
-        className="form--login"
+        className="login"
         fields={inputFields}
         onSubmit={handleLogin}
       >
-        <Button className="button--submit" type="submit">
+        <Button className="submit" type="submit">
           Log in
         </Button>
       </Form>
-      <Link to="/">Back to home</Link>
-      {error && <p>Incorrect username or password.</p>}
+      <Link to="/signup">Don't have an account? Register</Link>
+      {/* {error && <p>Incorrect username or password.</p>} */}
     </>
   );
 }

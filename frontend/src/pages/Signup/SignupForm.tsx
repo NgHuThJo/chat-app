@@ -1,5 +1,5 @@
 // Third party
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 // Contexts
 import { useApiContext } from "../../utility/context/ApiContext";
 // Custom hooks
@@ -7,6 +7,8 @@ import useFetch from "../../utility/hooks/useFetch";
 // Components
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
+// Types
+import { GeneralObject } from "../../utility/types/utilityType";
 
 // Input fields
 const inputFields = [
@@ -25,23 +27,25 @@ const inputFields = [
 ];
 
 function SignupForm() {
-  const { apiBaseUrl } = useApiContext();
+  const { apiBaseUrl } = useApiContext() as { apiBaseUrl: string };
   const { error, fetchData } = useFetch();
   const navigate = useNavigate();
-  const actionUrl = apiBaseUrl + "/api/signup";
 
-  const onSubmit = async (event, postData) => {
+  const onSubmit = async (
+    formData: GeneralObject,
+    event: React.FormEvent<SubmitEvent>
+  ) => {
     event.preventDefault();
 
-    const message = await fetchData(actionUrl, {
+    const response = await fetchData(`${apiBaseUrl}/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(postData),
+      body: JSON.stringify(formData),
     });
 
-    if (message) {
+    if (response) {
       navigate("/");
     }
   };
@@ -50,18 +54,14 @@ function SignupForm() {
     <>
       <h1>Signup Form</h1>
       <Form
-        action={actionUrl}
         method="post"
-        className="form--signup"
-        inputFields={inputFields}
+        className="signup"
+        fields={inputFields}
         onSubmit={onSubmit}
       >
-        <Button className="button--submit" type="submit">
-          Sign up
-        </Button>
+        <Button className="submit">Sign up</Button>
       </Form>
-      <Link to="/">Back to home</Link>
-      {error && <p>Username and password must not be empty.</p>}
+      {/* {error && <p>Username and password must not be empty.</p>} */}
     </>
   );
 }

@@ -1,0 +1,3 @@
+.home {
+  composes: container from global;
+}

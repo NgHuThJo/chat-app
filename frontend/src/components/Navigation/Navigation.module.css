@@ -1,7 +1,12 @@
-.navigation {
+.header {
   composes: flex from global;
   align-items: center;
-  gap: 1rem;
   padding: var(--padding-container);
   background-color: hsl(var(--bgc-nav));
+
+  > :last-child {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+  }
 }

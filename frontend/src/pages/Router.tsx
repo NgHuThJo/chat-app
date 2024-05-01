@@ -7,6 +7,7 @@ import ErrorPage from "./Error/ErrorPage.js";
 import Home from "./Home/Home.js";
 import Leaderboard from "./Leaderboard/Leaderboard";
 import LoginForm from "./Login/LoginForm.js";
+import SignupForm from "./Signup/SignupForm.js";
 
 function Router() {
   // Paths are case-insensitive, isSensitive prop of Route component has value false by default
@@ -25,14 +26,8 @@ function Router() {
           element: <LoginForm />,
         },
         {
-          path: "leaderboard",
-          element: <Authentication />,
-          children: [
-            {
-              index: true,
-              element: <Leaderboard />,
-            },
-          ],
+          path: "signup",
+          element: <SignupForm />,
         },
       ],
     },
