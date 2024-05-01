@@ -15,11 +15,10 @@ function App() {
         <Navigation className="navigation">
           <Link to="/">Home</Link>
           <Link to="login">Login</Link>
-          <Link to="upload">Upload files</Link>
           <Link to="leaderboard">Show leaderboard</Link>
         </Navigation>
         <main className="container">
-          <h1>Where is Waldo</h1>
+          <h1>Chat App</h1>
           <Outlet />
         </main>
       </AuthContextProvider>

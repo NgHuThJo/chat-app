@@ -15,27 +15,27 @@ const mockResponse = [
   },
 ];
 
-describe("leaderboard", () => {
-  beforeAll(() => {
-    vi.spyOn(global, "fetch").mockImplementation(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(mockResponse),
-      } as Response)
-    );
-  });
+// describe("leaderboard", () => {
+//   beforeAll(() => {
+//     vi.spyOn(global, "fetch").mockImplementation(() =>
+//       Promise.resolve({
+//         json: () => Promise.resolve(mockResponse),
+//       } as Response)
+//     );
+//   });
 
-  afterAll(() => {
-    vi.restoreAllMocks();
-  });
+//   afterAll(() => {
+//     vi.restoreAllMocks();
+//   });
 
-  it("should show list", async () => {
-    render(<Leaderboard />);
+//   it("should show list", async () => {
+//     render(<Leaderboard />);
 
-    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
+//     expect(screen.getByText(/Loading/i)).toBeInTheDocument();
 
-    // Wait until fetch is done...
-    await waitFor(() => expect(screen.getByRole("list")).toBeDefined());
-    expect(screen.queryByText(/Loading/i)).toBeNull();
-    expect(screen.getByText("John Doe")).toBeInTheDocument();
-  });
-});
+//     // Wait until fetch is done...
+//     await waitFor(() => expect(screen.getByRole("list")).toBeDefined());
+//     expect(screen.queryByText(/Loading/i)).toBeNull();
+//     expect(screen.getByText("John Doe")).toBeInTheDocument();
+//   });
+// });

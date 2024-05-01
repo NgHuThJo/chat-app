@@ -27,7 +27,7 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
   // React Router
   const navigate = useNavigate();
   // Custom hook
-  const { fetchData } = useFetch();
+  const { error, fetchData } = useFetch();
 
   useEffect(() => {
     const userLogStatus = localStorage.getItem("isUserLogged");
@@ -36,6 +36,14 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       setIsUserLogged(JSON.parse(userLogStatus));
     }
   });
+
+  const contextValue = useMemo(
+    () => ({
+      error,
+      isUserLogged,
+    }),
+    [error, isUserLogged]
+  );
 
   const api = useMemo(() => {
     const handleLogin = async (
@@ -56,6 +64,7 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       // TODO: implement how frontend handles serverResponse by either logging in user or showing error
 
       // MOCK IMPLEMENTATION OF LOGIN
+      localStorage.setItem("isUserLogged", JSON.stringify(true));
       setIsUserLogged(true);
       console.log("User logged in");
       navigate("/");
@@ -68,13 +77,6 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
 
     return { handleLogin, handleLogout, setIsUserLogged };
   }, []);
-
-  const contextValue = useMemo(
-    () => ({
-      isUserLogged,
-    }),
-    [isUserLogged]
-  );
 
   return (
     <AuthDispatchContext.Provider value={api}>

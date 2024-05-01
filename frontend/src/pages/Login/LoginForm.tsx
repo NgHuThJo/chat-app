@@ -1,7 +1,10 @@
 // Third party
 import { Link } from "react-router-dom";
 // Contexts
-import { useAuthDispatchContext } from "../../utility/context/AuthContext";
+import {
+  useAuthContext,
+  useAuthDispatchContext,
+} from "../../utility/context/AuthContext";
 // Components
 import Button from "../../components/Button/Button";
 import Form from "../../components/Form/Form";
@@ -24,6 +27,7 @@ const inputFields = [
 ];
 
 function LoginForm() {
+  const { error } = useAuthContext();
   const { handleLogin } = useAuthDispatchContext();
 
   return (
@@ -40,7 +44,7 @@ function LoginForm() {
         </Button>
       </Form>
       <Link to="/">Back to home</Link>
-      {/* {error && <p>Incorrect username or password.</p>} */}
+      {error && <p>Incorrect username or password.</p>}
     </>
   );
 }
