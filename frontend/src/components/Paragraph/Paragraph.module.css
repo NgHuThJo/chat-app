@@ -1,0 +1,4 @@
+.landingPage {
+  composes: grid from global;
+  place-content: center;
+}

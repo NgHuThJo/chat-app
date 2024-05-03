@@ -2,7 +2,14 @@
 .signup {
   composes: grid from global;
 
-  > :not(:first-child) {
+  input {
+    border: none;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    background-color: hsl(var(--bgc-input));
+  }
+
+  > button {
     margin-top: 1em;
   }
 }

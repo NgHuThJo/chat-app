@@ -5,7 +5,6 @@ import App from "../App.jsx";
 import Authentication from "./Authentication/Authentication.js";
 import ErrorPage from "./Error/ErrorPage.js";
 import Home from "./Home/Home.js";
-import Leaderboard from "./Leaderboard/Leaderboard";
 import LoginForm from "./Login/LoginForm.js";
 import SignupForm from "./Signup/SignupForm.js";
 

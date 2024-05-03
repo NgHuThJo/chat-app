@@ -21,8 +21,7 @@
 /* Container */
 .container {
   --padding-inline: 2rem;
-  --max-width: var(--width-content);
 
-  width: min(var(--max-width), 100% - 2 * var(--padding-inline));
+  width: min(var(--max-width-content), 100% - 2 * var(--padding-inline));
   margin: 0 auto;
 }

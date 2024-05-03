@@ -7,6 +7,7 @@ import { GeneralObject } from "../../utility/types/utilityType.js";
 import styles from "./Form.module.css";
 
 interface FormProps extends GeneralObject {
+  error: Error;
   fields: GeneralObject[];
   onSubmit(
     event: React.FormEvent<HTMLFormElement>,
@@ -17,6 +18,7 @@ interface FormProps extends GeneralObject {
 function Form({
   children,
   className,
+  error,
   fields,
   onSubmit,
   ...restProps
@@ -41,6 +43,7 @@ function Form({
           <Fragment key={index}>
             {label && <label htmlFor={field.id}>{label}</label>}
             <input onChange={handleInputChange} {...restProperties} />
+            {error && <p>{field.error}</p>}
           </Fragment>
         );
       })}

@@ -21,7 +21,7 @@ function App() {
             <Link to="signup">Sign up</Link>
           </div>
         </Navigation>
-        <Main className="home">
+        <Main className="content">
           <Outlet />
         </Main>
       </AuthContextProvider>

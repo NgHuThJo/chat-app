@@ -1,7 +1,7 @@
 /* Custom properties */
 :root {
   /* Box model */
-  --width-content: 100rem;
+  --max-width-content: 100rem;
   --flow-spacing: 1em;
   --padding-container: 2rem;
 
@@ -25,8 +25,13 @@
   --fs-body: 1rem;
 
   /* Colors */
-  --bgc-button-submit: 180 50% 50%;
-  --bgc-nav: 240 25% 50%;
+  --c-link: 201 94% 27%;
+  --c-root: 216 12% 67%;
+
+  --bgc-button: 201 94% 27%;
+  --bgc-input: 222 19% 27%;
+  --bgc-nav: 215 23% 16%;
+  --bgc-root: 216 38% 10%;
 
   /* Transition */
   --transition-duration: 0.5s;
@@ -39,6 +44,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  color: inherit;
 }
 
 html {
@@ -52,6 +58,10 @@ body {
   font-family: var(--ff-body);
   font-weight: var(--fw-body);
   font-size: var(--fs-body);
+}
+
+a {
+  color: hsl(var(--c-link));
 }
 
 button {
@@ -72,4 +82,13 @@ input {
 ol,
 ul {
   list-style: none;
+}
+
+/* Root styles */
+#root {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100svh;
+  color: hsl(var(--c-root));
+  background-color: hsl(var(--bgc-root));
 }

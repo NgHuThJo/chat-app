@@ -1,12 +1,10 @@
 // Third party
-import { Link } from "react-router-dom";
 // Components
-// Assets
-import List from "../../components/List/List.js";
+import Paragraph from "../../components/Paragraph/Paragraph";
 
 function Home() {
   return (
-    <p>
+    <Paragraph>
       Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magnam
       voluptates illum saepe autem? Mollitia architecto, nostrum molestiae iusto
       labore temporibus accusantium corporis repudiandae dicta earum tempore
@@ -18,7 +16,7 @@ function Home() {
       maiores? Id magnam vitae, quos sit excepturi nisi cum! Ad quidem
       consequatur iste, officiis magni exercitationem a illo voluptas, quibusdam
       dicta earum autem! Tenetur aperiam quis possimus quae!
-    </p>
+    </Paragraph>
   );
 }
 

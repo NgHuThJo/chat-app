@@ -15,14 +15,18 @@ const inputFields = [
   {
     type: "text",
     id: "username",
+    label: "Username:",
     name: "username",
     placeholder: "Your username...",
+    error: "Your username does not satisfy requirements.",
   },
   {
     type: "password",
     id: "password",
+    label: "Password:",
     name: "password",
     placeholder: "Your password...",
+    error: "Your password does not satisfy requirements.",
   },
 ];
 
@@ -52,16 +56,16 @@ function SignupForm() {
 
   return (
     <>
-      <h1>Signup Form</h1>
+      <h2>Signup Form</h2>
       <Form
         method="post"
         className="signup"
+        error={error}
         fields={inputFields}
         onSubmit={onSubmit}
       >
         <Button className="submit">Sign up</Button>
       </Form>
-      {/* {error && <p>Username and password must not be empty.</p>} */}
     </>
   );
 }
