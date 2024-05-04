@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 // Contexts
 // Components
-import Router from "./pages/Router.js";
+import { Router } from "./pages/Router.js";
 // Styles
 import "./assets/styles/index.css";
 import "./assets/styles/layout.css";

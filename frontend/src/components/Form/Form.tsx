@@ -7,7 +7,7 @@ import { GeneralObject } from "../../utility/types/utilityType.js";
 import styles from "./Form.module.css";
 
 interface FormProps extends GeneralObject {
-  error: Error;
+  error?: Error;
   fields: GeneralObject[];
   onSubmit(
     event: React.FormEvent<HTMLFormElement>,
