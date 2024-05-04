@@ -36,10 +36,10 @@ function SignupForm() {
   const navigate = useNavigate();
 
   const onSubmit = async (
-    event: React.FormEvent<SubmitEvent>,
+    event: React.FormEvent<HTMLFormElement>,
     formData: GeneralObject
   ) => {
-    // event.preventDefault();
+    event.preventDefault();
 
     const response = await fetchData(`${apiBaseUrl}/signup`, {
       method: "POST",
@@ -52,8 +52,6 @@ function SignupForm() {
     if (response) {
       navigate("/");
     }
-
-    navigate("/");
   };
 
   return (

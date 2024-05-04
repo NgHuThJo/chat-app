@@ -53,21 +53,20 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       event.preventDefault();
 
       // Current implementation might return JSON or undefined
-      // const serverResponse = await fetchData(`${apiBaseUrl}/login`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify(formData),
-      // });
+      const response = await fetchData(`${apiBaseUrl}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
-      // TODO: implement how frontend handles serverResponse by either logging in user or showing error
-
-      // MOCK IMPLEMENTATION OF LOGIN
-      localStorage.setItem("isUserLogged", JSON.stringify(true));
-      setIsUserLogged(true);
-      console.log("User logged in");
-      navigate("/");
+      if (response) {
+        localStorage.setItem("isUserLogged", JSON.stringify(true));
+        setIsUserLogged(true);
+        console.log("User logged in");
+        navigate("/");
+      }
     };
 
     const handleLogout = () => {

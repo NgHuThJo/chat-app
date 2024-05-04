@@ -4,14 +4,12 @@ import { setupServer } from "msw/node";
 export const handlers = [
   http.post("/login", () => {
     return HttpResponse.json({
-      username: "username",
-      password: "password",
+      message: "Success",
     });
   }),
   http.post("/signup", () => {
     return HttpResponse.json({
-      username: "username",
-      password: "password",
+      message: "Success",
     });
   }),
 ];
