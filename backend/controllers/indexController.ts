@@ -2,9 +2,9 @@
 import asyncHandler from "express-async-handler";
 import bcryptjs from "bcryptjs";
 import debug from "debug";
-import express from "express";
+import * as express from "express";
+import { ValidationChain, validationResult } from "express-validator";
 import passport from "passport";
-import { RequestHandler } from "express";
 // Models
 import User from "../models/user.js";
 // Utility functions
@@ -12,12 +12,39 @@ import { validateInput } from "../utility/inputValidation/validationChains.js";
 
 const logger = debug("blog-api:indexController");
 
-export const playerListGet = asyncHandler(async (req, res, next) => {
-  const users = await User.find().exec();
+export const signupPost = [
+  validateInput("username"),
+  validateInput("password"),
+  asyncHandler(async (req, res, next) => {
+    const errors = validationResult(req);
 
-  res.json(users);
-});
+    const user = new User({
+      username: req.body.username,
+      password: await bcryptjs.hash(req.body.password, 10),
+    });
 
-export const uploadPost: RequestHandler = (req, res) => {
-  res.json({ message: "file uploaded" });
-};
+    logger("Sign up Post");
+
+    if (!errors.isEmpty()) {
+      res.status(400).json({
+        ...user,
+        password: req.body.password,
+      });
+    } else {
+      await user.save();
+
+      res.status(200).json({
+        message: "Signup successful",
+      });
+    }
+  }),
+];
+
+export const loginPost = [
+  passport.authenticate("local"),
+  asyncHandler(async (req, res, next) => {
+    res.status(200).json({
+      message: "Login successful",
+    });
+  }),
+];

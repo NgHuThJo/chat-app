@@ -1,12 +1,9 @@
-import express from "express";
-import multer from "multer";
+import * as express from "express";
 import * as indexController from "../../../controllers/indexController.js";
 
 const router = express.Router();
-const upload = multer({ dest: "uploads/images/" });
 
-router.get("/playerlist", indexController.playerListGet);
-
-router.post("/upload", upload.array("files"), indexController.uploadPost);
+router.post("/login", indexController.loginPost);
+router.post("/signup", indexController.signupPost);
 
 export default router;

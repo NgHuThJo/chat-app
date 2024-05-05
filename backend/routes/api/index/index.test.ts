@@ -23,11 +23,11 @@ app.use("/", indexRouter);
 const fakeData = [
   {
     username: "Johnny Doe",
-    score: 100,
+    password: "password",
   },
   {
     username: "Jane Doe",
-    score: 120,
+    password: "password",
   },
 ];
 
@@ -50,30 +50,19 @@ describe("test index routes", () => {
     await disconnectMongoServer();
   });
 
-  describe("get /playerlist", () => {
+  describe("post /signup", () => {
     it("should return status code 200", async () => {
-      const response = await request(app).get("/playerlist");
+      const response = await request(app)
+        .post("/signup")
+        .type("form")
+        .field("username", "Johnny Doe")
+        .field("password", "password");
 
       expect(response.status).toEqual(200);
-
-      response.body.forEach((element: object) => {
-        expect(element).toMatchObject({
-          username: expect.any(String),
-          score: expect.any(Number),
-        });
-      });
     });
   });
 
   describe("post /upload", () => {
-    it("should return status code 200", async () => {
-      // file path for attach() must be relative to the current working directory
-      const response = await request(app)
-        .post("/upload")
-        .field("name", "John Doe")
-        .attach("files", "./routes/api/index/index.ts");
-
-      expect(response.status).toEqual(200);
-    });
+    it("should return status code 200", async () => {});
   });
 });

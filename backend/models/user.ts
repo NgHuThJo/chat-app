@@ -6,11 +6,21 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  score: {
-    type: Number,
+  password: {
+    type: String,
     required: true,
-    min: 0,
+    value: {
+      minlength: 1,
+    },
   },
+  posts: [
+    {
+      message: String,
+      to: {
+        type: Schema.Types.ObjectId,
+      },
+    },
+  ],
 });
 
 export default model("User", UserSchema);

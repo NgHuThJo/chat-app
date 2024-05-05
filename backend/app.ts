@@ -51,7 +51,7 @@ app.use(passport.session());
 // Routes
 app.use("/api", apiRouter);
 
-// // For debugging purposes
+// For debugging purposes
 // app.use((req, res, next) => {
 //   console.log(req.session);
 //   console.log(req.user);
