@@ -17,16 +17,20 @@ export function setupLocalStrategy() {
     async (username: string, password: string, done: Done) => {
       try {
         const user = await User.findOne({ username: username }).exec();
+
         if (!user) {
           return done(null, false, { message: "Incorrect username" });
         }
+
         const doesPasswordMatch = await bcryptjs.compare(
           password,
           user.password
         );
+
         if (!doesPasswordMatch) {
           return done(null, false, { message: "Incorrect password" });
         }
+
         return done(null, user);
       } catch (err) {
         if (err instanceof Error) {

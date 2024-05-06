@@ -1,5 +1,5 @@
 //// mongoConfigTesting.js
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 const mongoServer = await MongoMemoryServer.create();
@@ -22,8 +22,11 @@ export async function initializeMongoServer() {
   });
 }
 
-export async function disconnectMongoServer() {
+export async function dropDatabase() {
   await mongoose.connection.dropDatabase();
+}
+
+export async function disconnectMongoServer() {
   await mongoose.connection.close();
   await mongoServer.stop();
 }

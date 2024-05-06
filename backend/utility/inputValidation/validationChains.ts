@@ -1,12 +1,15 @@
-import { body } from "express-validator";
-import { RequestHandler } from "express";
+import { body, ValidationChain } from "express-validator";
 
-export function validateInput(formFieldName: string) {
-  return () => {
+export function validateInput(formFieldName: string): ValidationChain[] {
+  const fieldMinLength = 4;
+
+  return [
     body(formFieldName)
       .trim()
-      .isLength({ min: 1 })
-      .withMessage(`${formFieldName} must not be empty`)
-      .escape();
-  };
+      .isLength({ min: fieldMinLength })
+      .withMessage(
+        `${formFieldName} must not be at least ${fieldMinLength} characters long.`
+      )
+      .escape(),
+  ];
 }

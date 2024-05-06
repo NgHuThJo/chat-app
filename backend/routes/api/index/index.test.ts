@@ -1,40 +1,63 @@
 // Third party
+import bcryptjs from "bcryptjs";
 import debug from "debug";
 import express from "express";
 import {
   disconnectMongoServer,
+  dropDatabase,
   initializeMongoServer,
 } from "../../../mongoConfigTesting.js";
 import mongoose from "mongoose";
+import passport from "passport";
+import session from "express-session";
 import request from "supertest";
 // Collections
 import User from "../../../models/user.js";
 // Router
 import indexRouter from "./index.js";
+// Custom code
+import { setupLocalStrategy } from "../../../utility/authentication/passport.js";
 
-const logger = debug("wheres-waldo:index:test");
+const logger = debug("chat-app:test");
 const app = express();
+const saltLength = 10;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+setupLocalStrategy();
+app.use(
+  session({
+    secret: "catsanddogs",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000,
+    },
+  })
+);
+app.use(passport.session());
+
 app.use("/", indexRouter);
 
 // Mock user data
 const fakeData = [
   {
     username: "Johnny Doe",
-    password: "password",
+    password: await bcryptjs.hash("password", saltLength),
   },
   {
     username: "Jane Doe",
-    password: "password",
+    password: await bcryptjs.hash("password", saltLength),
   },
 ];
 
 describe("test index routes", () => {
   beforeAll(async () => {
     await initializeMongoServer();
+  });
 
+  beforeEach(async () => {
     // Save fake user in data base
     try {
       for (let userData of fakeData) {
@@ -46,23 +69,51 @@ describe("test index routes", () => {
     }
   });
 
+  afterEach(async () => {
+    await dropDatabase();
+  });
+
   afterAll(async () => {
     await disconnectMongoServer();
   });
 
   describe("post /signup", () => {
     it("should return status code 200", async () => {
-      const response = await request(app)
-        .post("/signup")
-        .type("form")
-        .field("username", "Johnny Doe")
-        .field("password", "password");
+      const response = await request(app).post("/signup").send({
+        username: "Johnnie Doe",
+        password: "password",
+      });
 
-      expect(response.status).toEqual(200);
+      expect(response.status).toBe(200);
+    });
+
+    it("should return status code 400 because password is too short", async () => {
+      const response = await request(app).post("/signup").send({
+        username: "Johnnie Doe",
+        password: "sho",
+      });
+
+      expect(response.status).toBe(400);
     });
   });
 
-  describe("post /upload", () => {
-    it("should return status code 200", async () => {});
+  describe("post /login", () => {
+    it("should return status code 200", async () => {
+      const response = await request(app).post("/login").send({
+        username: "Johnny Doe",
+        password: "password",
+      });
+
+      expect(response.status).toBe(200);
+    });
+
+    it("should return status code 401", async () => {
+      const response = await request(app).post("/login").send({
+        username: "Johnny Doe",
+        password: "wrongpassword",
+      });
+
+      expect(response.status).toBe(401);
+    });
   });
 });

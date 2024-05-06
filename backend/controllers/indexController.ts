@@ -10,7 +10,8 @@ import User from "../models/user.js";
 // Utility functions
 import { validateInput } from "../utility/inputValidation/validationChains.js";
 
-const logger = debug("blog-api:indexController");
+const logger = debug("chat-app:indexController");
+const saltLength = 10;
 
 export const signupPost = [
   validateInput("username"),
@@ -20,10 +21,8 @@ export const signupPost = [
 
     const user = new User({
       username: req.body.username,
-      password: await bcryptjs.hash(req.body.password, 10),
+      password: await bcryptjs.hash(req.body.password, saltLength),
     });
-
-    logger("Sign up Post");
 
     if (!errors.isEmpty()) {
       res.status(400).json({
