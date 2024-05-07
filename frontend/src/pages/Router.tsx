@@ -3,6 +3,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Components
 import App from "../App.js";
 import AppLayout from "./AppLayout/AppLayout.js";
+import Authentication from "./Authentication/Authentication.js";
+import ChatLayout from "./ChatLayout/ChatLayout.js";
 import ErrorPage from "./Error/ErrorPage.js";
 import Home from "./Home/Home.js";
 import LoginForm from "./Login/LoginForm.js";
@@ -28,6 +30,16 @@ export const routesConfig = [
           {
             path: "signup",
             element: <SignupForm />,
+          },
+          {
+            path: "chat",
+            element: <Authentication />,
+            children: [
+              {
+                index: true,
+                element: <ChatLayout />,
+              },
+            ],
           },
         ],
       },

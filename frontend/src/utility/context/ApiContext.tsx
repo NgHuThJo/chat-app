@@ -2,7 +2,7 @@ import { createContext, useContext, useMemo } from "react";
 import { ComponentBaseProps } from "../types/utilityType";
 
 // Context creators
-const ApiContext = createContext<object>({});
+const ApiContext = createContext({});
 
 // Context getters
 function useApiContext() {

@@ -1,6 +1,6 @@
 // Third party
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { createContext, useContext, useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 // Contexts
 import { useApiContext } from "./ApiContext.tsx";
 // Custom hooks
@@ -20,35 +20,32 @@ function useAuthDispatchContext() {
 }
 
 function AuthContextProvider({ children }: ComponentBaseProps) {
+  const userLogStatus = localStorage.getItem("isUserLogged");
+
   // State
-  const [isUserLogged, setIsUserLogged] = useState(false);
+  const [isUserLogged, setIsUserLogged] = useState(
+    userLogStatus ? JSON.parse(userLogStatus) : false
+  );
   // Context
   const { apiBaseUrl } = useApiContext() as { apiBaseUrl: string };
   // React Router
+  const location = useLocation();
   const navigate = useNavigate();
   // Custom hook
-  const { error, fetchData } = useFetch();
-
-  useEffect(() => {
-    const userLogStatus = localStorage.getItem("isUserLogged");
-
-    if (userLogStatus !== null) {
-      setIsUserLogged(JSON.parse(userLogStatus));
-    }
-  });
+  const { fetchData } = useFetch();
 
   const contextValue = useMemo(
     () => ({
-      error,
       isUserLogged,
     }),
-    [error, isUserLogged]
+    [isUserLogged]
   );
 
   const api = useMemo(() => {
     const handleLogin = async (
       event: React.FormEvent<HTMLFormElement>,
-      formData: GeneralObject
+      formData: GeneralObject,
+      error: Boolean
     ) => {
       event.preventDefault();
 
@@ -62,9 +59,11 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       });
 
       if (response) {
+        const origin = location?.state?.from?.pathname || "/chat";
+
         localStorage.setItem("isUserLogged", JSON.stringify(true));
         setIsUserLogged(true);
-        navigate("/");
+        navigate(origin);
       }
     };
 

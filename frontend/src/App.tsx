@@ -22,6 +22,7 @@ function App() {
           <Link to="/">Home</Link>
           {!isUserLogged && <Link to="login">Login</Link>}
           {isUserLogged && <a onClick={handleLogout}>Logout</a>}
+          <Link to="chat">Chat</Link>
           <Link to="signup">Sign up</Link>
         </div>
       </Navigation>
