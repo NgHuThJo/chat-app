@@ -1,8 +1,8 @@
 // Third party
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 // Components
-import App from "../App.jsx";
-import Authentication from "./Authentication/Authentication.js";
+import App from "../App.js";
+import AppLayout from "./AppLayout/AppLayout.js";
 import ErrorPage from "./Error/ErrorPage.js";
 import Home from "./Home/Home.js";
 import LoginForm from "./Login/LoginForm.js";
@@ -10,21 +10,26 @@ import SignupForm from "./Signup/SignupForm.js";
 
 export const routesConfig = [
   {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage className="error-page" />,
+    element: <AppLayout />,
     children: [
       {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: "login",
-        element: <LoginForm />,
-      },
-      {
-        path: "signup",
-        element: <SignupForm />,
+        path: "/",
+        element: <App />,
+        errorElement: <ErrorPage className="error-page" />,
+        children: [
+          {
+            index: true,
+            element: <Home />,
+          },
+          {
+            path: "login",
+            element: <LoginForm />,
+          },
+          {
+            path: "signup",
+            element: <SignupForm />,
+          },
+        ],
       },
     ],
   },

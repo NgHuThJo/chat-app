@@ -32,7 +32,7 @@ const inputFields = [
 
 function SignupForm() {
   const { apiBaseUrl } = useApiContext() as { apiBaseUrl: string };
-  const { error, fetchData } = useFetch();
+  const { fetchData } = useFetch();
   const navigate = useNavigate();
 
   const onSubmit = async (
@@ -60,7 +60,6 @@ function SignupForm() {
       <Form
         method="post"
         className="signup"
-        error={error}
         fields={inputFields}
         onSubmit={onSubmit}
       >

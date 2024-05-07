@@ -4,6 +4,7 @@ import { ComponentBaseProps } from "../../utility/types/utilityType";
 import styles from "./Button.module.css";
 
 type ButtonProps = ComponentBaseProps & {
+  onClick?: () => void;
   type?: string;
 };
 

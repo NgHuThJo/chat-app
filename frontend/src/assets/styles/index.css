@@ -61,7 +61,9 @@ body {
 }
 
 a {
+  text-decoration: underline;
   color: hsl(var(--c-link));
+  cursor: pointer;
 }
 
 button {

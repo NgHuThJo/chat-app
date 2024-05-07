@@ -11,18 +11,19 @@ interface FormProps extends GeneralObject {
   fields: GeneralObject[];
   onSubmit(
     event: React.FormEvent<HTMLFormElement>,
-    formData: GeneralObject
+    formData: GeneralObject,
+    setError: React.Dispatch<Boolean>
   ): void;
 }
 
 function Form({
   children,
   className,
-  error,
   fields,
   onSubmit,
   ...restProps
 }: FormProps) {
+  const [error, setError] = useState<Boolean>(false);
   const [formData, setFormData] = useState<GeneralObject>({});
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +34,7 @@ function Form({
   return (
     <form
       className={styles[className!]}
-      onSubmit={(event) => onSubmit(event, formData)}
+      onSubmit={(event) => onSubmit(event, formData, setError)}
       {...restProps}
     >
       {fields.map((field, index) => {

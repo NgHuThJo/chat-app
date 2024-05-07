@@ -64,7 +64,6 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       if (response) {
         localStorage.setItem("isUserLogged", JSON.stringify(true));
         setIsUserLogged(true);
-        console.log("User logged in");
         navigate("/");
       }
     };
@@ -72,6 +71,7 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
     const handleLogout = () => {
       localStorage.setItem("isUserLogged", JSON.stringify(false));
       setIsUserLogged(false);
+      navigate("/");
     };
 
     return { handleLogin, handleLogout, setIsUserLogged };

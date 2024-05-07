@@ -31,7 +31,6 @@ const inputFields = [
 ];
 
 function LoginForm() {
-  const { error } = useAuthContext();
   const { handleLogin } = useAuthDispatchContext();
 
   return (
@@ -40,7 +39,6 @@ function LoginForm() {
       <Form
         method="post"
         className="login"
-        error={error}
         fields={inputFields}
         onSubmit={handleLogin}
       >
