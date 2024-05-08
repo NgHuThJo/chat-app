@@ -116,4 +116,12 @@ describe("test index routes", () => {
       expect(response.status).toBe(401);
     });
   });
+
+  describe("get /chat", () => {
+    it("should return status code 200", async () => {
+      const response = await request(app).get("/chat");
+
+      expect(response.status).toBe(200);
+    });
+  });
 });

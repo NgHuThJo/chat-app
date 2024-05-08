@@ -1,23 +1,24 @@
-// Components
-import Sidebar from "../../components/Sidebar/Sidebar";
-// Types
-import { ComponentBaseProps } from "../../utility/types/utilityType";
+// Contexts
+import { useEffect } from "react";
+import { useApiContext } from "../../utility/context/ApiContext";
+// Custom hooks
+import useFetch from "../../utility/hooks/useFetch";
 // Styles
 import styles from "./ChatLayout.module.css";
 
 function ChatLayout() {
+  const { apiBaseUrl } = useApiContext();
+  const { data, fetchData } = useFetch();
+
+  // useEffect(async () => {
+  //   const response = await fetchData(`${apiBaseUrl}/chat`, {
+  //     method: "GET",
+  //   });
+  // });
+
   return (
     <article className={styles.default}>
-      <aside>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-          nemo, totam accusantium dicta odio autem vel illum fugit quas voluptas
-          recusandae iste deleniti nostrum dolores excepturi ab fuga repudiandae
-          minus assumenda voluptatum in! Cum, corporis numquam. Beatae sint
-          excepturi officiis fugit laudantium quo libero aliquid dolores. Ipsa
-          eos harum explicabo?
-        </p>
-      </aside>
+      <aside></aside>
       <section>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error mollitia
         esse possimus in blanditiis quia, est tenetur, nulla quaerat ad iusto

@@ -47,3 +47,9 @@ export const loginPost = [
     });
   }),
 ];
+
+export const chatGet = asyncHandler(async (req, res, next) => {
+  const userList = await User.find().exec();
+
+  res.json(userList);
+});

@@ -1,6 +1,6 @@
-import { body, ValidationChain } from "express-validator";
+import { body } from "express-validator";
 
-export function validateInput(formFieldName: string): ValidationChain[] {
+export function validateInput(formFieldName: string) {
   const fieldMinLength = 4;
 
   return [
