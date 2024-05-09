@@ -10,13 +10,17 @@ function useApiContext() {
 }
 
 function ApiContextProvider({ children }: ComponentBaseProps) {
-  const apiBaseUrl = "http://localhost:3000/api";
+  const baseUrl = "http://localhost:3000";
+  const apiBaseUrl = `${baseUrl}/api`;
+  const webSocketBaseUrl = "ws://localhost:8080";
 
   const contextValue = useMemo(
     () => ({
+      baseUrl,
       apiBaseUrl,
+      webSocketBaseUrl,
     }),
-    [apiBaseUrl]
+    []
   );
 
   return (

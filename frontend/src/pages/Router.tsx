@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../App.js";
 import AppLayout from "./AppLayout/AppLayout.js";
 import Authentication from "./Authentication/Authentication.js";
+import ChatForm from "./ChatForm/ChatForm.js";
 import ChatLayout from "./ChatLayout/ChatLayout.js";
 import ErrorPage from "./Error/ErrorPage.js";
 import Home from "./Home/Home.js";
@@ -13,11 +14,11 @@ import SignupForm from "./Signup/SignupForm.js";
 export const routesConfig = [
   {
     element: <AppLayout />,
+    errorElement: <ErrorPage className="error-page" />,
     children: [
       {
         path: "/",
         element: <App />,
-        errorElement: <ErrorPage className="error-page" />,
         children: [
           {
             index: true,
@@ -38,6 +39,10 @@ export const routesConfig = [
               {
                 index: true,
                 element: <ChatLayout />,
+              },
+              {
+                path: "form",
+                element: <ChatForm />,
               },
             ],
           },

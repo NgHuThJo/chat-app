@@ -6,6 +6,7 @@ import main from "./mongoConfig.js";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import session from "express-session";
+import { WebSocketServer } from "ws";
 import { createProxyMiddleware } from "http-proxy-middleware";
 // Custom code
 import { setupLocalStrategy } from "./utility/authentication/passport.js";
@@ -16,7 +17,30 @@ import apiRouter from "./routes/api.js";
 const logger = debug("wheres-waldo:app");
 const app = express();
 const port = process.env.PORT || 3000;
+const webSocketPort = process.env.WEBSOCKET_PORT || 8080;
+// WebSocket setup
+const wss = new WebSocketServer({ port: webSocketPort });
 
+wss.on("connection", (ws) => {
+  ws.on("error", console.error);
+
+  ws.on("open", () => {
+    console.log("connected");
+    ws.send(Date.now());
+  });
+
+  ws.on("close", () => {
+    console.log("disconnected");
+  });
+
+  ws.on("message", (data) => {
+    console.log("received: %s", data);
+  });
+
+  ws.send("send some message back");
+});
+
+// App setup
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
 });
