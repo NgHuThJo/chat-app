@@ -18,7 +18,7 @@ const inputFields = [
     name: "username",
     label: "Username:",
     placeholder: "Your username...",
-    error: "Your username does not satisfy requirements.",
+    error: "Your username is incorrect.",
   },
   {
     type: "password",
@@ -26,7 +26,7 @@ const inputFields = [
     name: "password",
     label: "Password:",
     placeholder: "Your password...",
-    error: "Your password does not satisfy requirements.",
+    error: "Your password is incorrect.",
   },
 ];
 

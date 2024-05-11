@@ -12,7 +12,7 @@ interface FormProps extends GeneralObject {
   onSubmit(
     event: React.FormEvent<HTMLFormElement>,
     formData: GeneralObject,
-    setError: React.Dispatch<Boolean>
+    setError?: React.Dispatch<React.SetStateAction<Boolean>>
   ): void;
 }
 
@@ -44,7 +44,7 @@ function Form({
           <Fragment key={index}>
             {label && <label htmlFor={field.id}>{label}</label>}
             <input onChange={handleInputChange} {...restProperties} />
-            {error && <p>{field.error}</p>}
+            {error && <p className={styles.error}>{field.error}</p>}
           </Fragment>
         );
       })}

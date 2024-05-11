@@ -42,9 +42,9 @@ export const signupPost = [
 export const loginPost = [
   passport.authenticate("local"),
   asyncHandler(async (req, res, next) => {
-    res.status(200).json({
-      message: "Login successful",
-    });
+    const { password, ...payload } = req.user._doc;
+
+    res.status(200).json(payload);
   }),
 ];
 

@@ -18,26 +18,33 @@ const logger = debug("wheres-waldo:app");
 const app = express();
 const port = process.env.PORT || 3000;
 const webSocketPort = process.env.WEBSOCKET_PORT || 8080;
+
 // WebSocket setup
 const wss = new WebSocketServer({ port: webSocketPort });
+const onlineUsers = new Map();
+const rooms = new Set();
 
 wss.on("connection", (ws) => {
-  ws.on("error", console.error);
+  console.log("connected");
 
-  ws.on("open", () => {
-    console.log("connected");
-    ws.send(Date.now());
+  ws.on("addUser", (userId) => {
+    onlineUsers.set(userId, ws);
+    console.log(onlineUsers);
+    console.log("user added");
+    ws.send("user added");
   });
 
   ws.on("close", () => {
     console.log("disconnected");
+    ws.send("user disconnected");
   });
+
+  ws.on("error", console.error);
 
   ws.on("message", (data) => {
     console.log("received: %s", data);
+    ws.send("message received");
   });
-
-  ws.send("send some message back");
 });
 
 // App setup

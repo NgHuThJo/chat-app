@@ -1,4 +1,5 @@
 .login,
+.room,
 .signup {
   composes: grid from global;
 
@@ -9,7 +10,11 @@
     background-color: hsl(var(--bgc-input));
   }
 
-  > button {
+  > * {
     margin-top: 1em;
+  }
+
+  .error {
+    color: red;
   }
 }

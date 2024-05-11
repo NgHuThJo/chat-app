@@ -17,7 +17,7 @@ const inputFields = [
   },
 ];
 
-function ChatForm() {
+function ChatForm({ className = "room" }) {
   const { webSocketBaseUrl } = useApiContext();
   const socket = new WebSocket(webSocketBaseUrl);
 
@@ -33,6 +33,7 @@ function ChatForm() {
     socket.addEventListener("open", handleOpen);
     socket.addEventListener("message", handleMessage);
 
+    console.log(socket);
     return () => {
       socket.removeEventListener("open", handleOpen);
       socket.removeEventListener("message", handleMessage);
@@ -41,12 +42,10 @@ function ChatForm() {
 
   const handleSubmit = () => {};
 
-  console.log("chat form");
-
   return (
     <Form
       method="post"
-      className="room"
+      className={className}
       fields={inputFields}
       onSubmit={handleSubmit}
     >

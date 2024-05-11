@@ -1,6 +1,5 @@
 .content {
   composes: container grid from global;
-  place-content: center;
 
   > :not(:first-child) {
     margin-top: 1em;

@@ -10,17 +10,9 @@ const UserSchema = new Schema({
     type: String,
     required: true,
     value: {
-      minlength: 1,
+      minlength: 4,
     },
   },
-  posts: [
-    {
-      message: String,
-      to: {
-        type: Schema.Types.ObjectId,
-      },
-    },
-  ],
 });
 
 export default model("User", UserSchema);

@@ -6,6 +6,7 @@ import { useApiContext } from "../../utility/context/ApiContext";
 // Custom hooks
 import useFetch from "../../utility/hooks/useFetch";
 // Components
+import ChatRoom from "../ChatRoom/ChatRoom";
 import List from "../../components/List/List";
 // Types
 import { GeneralObject } from "../../utility/types/utilityType";
@@ -20,8 +21,6 @@ function ChatLayout() {
   useEffect(() => {
     fetchData(`${apiBaseUrl}/chat`, {
       method: "GET",
-    }).then((response) => {
-      console.log(response);
     });
   }, []);
 
@@ -38,14 +37,7 @@ function ChatLayout() {
           </List>
         )}
       </aside>
-      <section>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Error mollitia
-        esse possimus in blanditiis quia, est tenetur, nulla quaerat ad iusto
-        facere quis ea veritatis voluptatem commodi molestias repellendus
-        exercitationem beatae quidem. Corrupti error voluptatibus quisquam
-        explicabo earum accusantium esse in, voluptatum, et aperiam ut minima
-        iure consequuntur similique doloremque.
-      </section>
+      <ChatRoom></ChatRoom>
     </article>
   );
 }

@@ -18,7 +18,7 @@ const inputFields = [
     label: "Username:",
     name: "username",
     placeholder: "Your username...",
-    error: "Your username does not satisfy requirements.",
+    error: "Your username is too short.",
   },
   {
     type: "password",
@@ -26,7 +26,7 @@ const inputFields = [
     label: "Password:",
     name: "password",
     placeholder: "Your password...",
-    error: "Your password does not satisfy requirements.",
+    error: "Your password is too short.",
   },
 ];
 
@@ -37,7 +37,8 @@ function SignupForm() {
 
   const onSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
-    formData: GeneralObject
+    formData: GeneralObject,
+    setError?: React.Dispatch<React.SetStateAction<Boolean>>
   ) => {
     event.preventDefault();
 
@@ -51,7 +52,10 @@ function SignupForm() {
 
     if (response) {
       navigate("/");
+      return;
     }
+
+    setError && setError(true);
   };
 
   return (

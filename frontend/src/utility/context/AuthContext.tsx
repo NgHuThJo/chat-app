@@ -23,11 +23,12 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
   const userLogStatus = localStorage.getItem("isUserLogged");
 
   // State
+  const [currentUser, setCurrentUser] = useState({});
   const [isUserLogged, setIsUserLogged] = useState(
     userLogStatus ? JSON.parse(userLogStatus) : false
   );
   // Context
-  const { apiBaseUrl } = useApiContext() as { apiBaseUrl: string };
+  const { apiBaseUrl } = useApiContext();
   // React Router
   const location = useLocation();
   const navigate = useNavigate();
@@ -36,16 +37,17 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
 
   const contextValue = useMemo(
     () => ({
+      currentUser,
       isUserLogged,
     }),
-    [isUserLogged]
+    [currentUser, isUserLogged]
   );
 
   const api = useMemo(() => {
     const handleLogin = async (
       event: React.FormEvent<HTMLFormElement>,
       formData: GeneralObject,
-      error: Boolean
+      setError?: React.Dispatch<React.SetStateAction<Boolean>>
     ) => {
       event.preventDefault();
 
@@ -63,8 +65,13 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
 
         localStorage.setItem("isUserLogged", JSON.stringify(true));
         setIsUserLogged(true);
+        setCurrentUser(response);
         navigate(origin);
+
+        return;
       }
+
+      setError && setError(true);
     };
 
     const handleLogout = () => {
