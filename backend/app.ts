@@ -1,7 +1,7 @@
 // Third party
 import cors from "cors";
 import debug from "debug";
-import express from "express";
+import express, { json } from "express";
 import main from "./mongoConfig.js";
 import MongoStore from "connect-mongo";
 import passport from "passport";
@@ -27,11 +27,26 @@ const rooms = new Set();
 wss.on("connection", (ws) => {
   console.log("connected");
 
-  ws.on("addUser", (userId) => {
-    onlineUsers.set(userId, ws);
-    console.log(onlineUsers);
-    console.log("user added");
-    ws.send("user added");
+  ws.on("message", (payload) => {
+    const data = JSON.parse(payload);
+    console.log("received: %s", data);
+
+    switch (data.type) {
+      case "addUser": {
+        onlineUsers.set(data.id, ws);
+        console.log("user added");
+        ws.send(
+          JSON.stringify({
+            type: "getUsers",
+            data: Object.keys(onlineUsers),
+          })
+        );
+        break;
+      }
+      default: {
+        throw Error("Unknown type: ".concat(data.type));
+      }
+    }
   });
 
   ws.on("close", () => {
@@ -40,11 +55,6 @@ wss.on("connection", (ws) => {
   });
 
   ws.on("error", console.error);
-
-  ws.on("message", (data) => {
-    console.log("received: %s", data);
-    ws.send("message received");
-  });
 });
 
 // App setup

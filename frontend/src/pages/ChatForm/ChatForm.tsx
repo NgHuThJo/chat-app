@@ -18,27 +18,26 @@ const inputFields = [
 ];
 
 function ChatForm({ className = "room" }) {
-  const { webSocketBaseUrl } = useApiContext();
-  const socket = new WebSocket(webSocketBaseUrl);
+  // const { webSocketBaseUrl } = useApiContext();
+  // const socket = new WebSocket(webSocketBaseUrl);
 
-  useEffect(() => {
-    const handleOpen = (event) => {
-      socket.send("Hello, Server!");
-    };
+  // useEffect(() => {
+  //   const handleOpen = (event) => {
+  //     socket.send("Hello, Server!");
+  //   };
 
-    const handleMessage = (event) => {
-      console.log("Message from server ", event.data);
-    };
+  //   const handleMessage = (event) => {
+  //     console.log("Message from server ", event.data);
+  //   };
 
-    socket.addEventListener("open", handleOpen);
-    socket.addEventListener("message", handleMessage);
+  //   socket.addEventListener("open", handleOpen);
+  //   socket.addEventListener("message", handleMessage);
 
-    console.log(socket);
-    return () => {
-      socket.removeEventListener("open", handleOpen);
-      socket.removeEventListener("message", handleMessage);
-    };
-  }, []);
+  //   return () => {
+  //     socket.removeEventListener("open", handleOpen);
+  //     socket.removeEventListener("message", handleMessage);
+  //   };
+  // }, []);
 
   const handleSubmit = () => {};
 

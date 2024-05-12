@@ -1,5 +1,5 @@
 // Third party
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // Contexts
 import { useApiContext } from "./ApiContext.tsx";
@@ -20,13 +20,12 @@ function useAuthDispatchContext() {
 }
 
 function AuthContextProvider({ children }: ComponentBaseProps) {
-  const userLogStatus = localStorage.getItem("isUserLogged");
-
   // State
+  const [isUserLogged, setIsUserLogged] = useState(() => {
+    const userLogStatus = sessionStorage.getItem("isUserLogged");
+    return userLogStatus ? JSON.parse(userLogStatus) : false;
+  });
   const [currentUser, setCurrentUser] = useState({});
-  const [isUserLogged, setIsUserLogged] = useState(
-    userLogStatus ? JSON.parse(userLogStatus) : false
-  );
   // Context
   const { apiBaseUrl } = useApiContext();
   // React Router
@@ -34,6 +33,24 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
   const navigate = useNavigate();
   // Custom hook
   const { fetchData } = useFetch();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userId = sessionStorage.getItem("userId");
+
+      if (!userId) {
+        return;
+      }
+
+      const response = await fetchData(`${apiBaseUrl}/user/${userId}`);
+
+      if (response) {
+        setCurrentUser(response);
+      }
+    };
+
+    getUser();
+  }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -63,8 +80,9 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       if (response) {
         const origin = location?.state?.from?.pathname || "/chat";
 
-        localStorage.setItem("isUserLogged", JSON.stringify(true));
+        sessionStorage.setItem("isUserLogged", JSON.stringify(true));
         setIsUserLogged(true);
+        sessionStorage.setItem("userId", response._id);
         setCurrentUser(response);
         navigate(origin);
 
@@ -75,12 +93,14 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
     };
 
     const handleLogout = () => {
-      localStorage.setItem("isUserLogged", JSON.stringify(false));
+      sessionStorage.setItem("isUserLogged", JSON.stringify(false));
       setIsUserLogged(false);
+      sessionStorage.setItem("userId", "");
+      setCurrentUser({});
       navigate("/");
     };
 
-    return { handleLogin, handleLogout, setIsUserLogged };
+    return { handleLogin, handleLogout };
   }, []);
 
   return (

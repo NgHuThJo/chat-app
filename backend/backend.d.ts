@@ -6,3 +6,4 @@ declare module "multer";
 declare module "passport";
 declare module "passport-local";
 declare module "supertest";
+declare module "ws";
