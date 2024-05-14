@@ -2,7 +2,7 @@
 import cors from "cors";
 import debug from "debug";
 import express, { json } from "express";
-import main from "./mongoConfig.js";
+import main from "./config/mongoConfig.js";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import session from "express-session";

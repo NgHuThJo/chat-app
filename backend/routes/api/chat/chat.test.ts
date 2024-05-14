@@ -6,15 +6,15 @@ import request from "supertest";
 // Collections
 import User from "../../../models/user.js";
 // Router
-import userRouter from "./user.js";
+import chatRouter from "./chat.js";
 
-const logger = debug("chat-app:user.test");
+const logger = debug("chat-app:chat.test");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use("/", userRouter);
+app.use("/", chatRouter);
 
 const fakeData = [
   {
@@ -27,7 +27,7 @@ const fakeData = [
   },
 ];
 
-describe("user routes", () => {
+describe("chat routes", () => {
   beforeEach(async () => {
     // Save fake users in data base
     try {
@@ -42,14 +42,15 @@ describe("user routes", () => {
     }
   });
 
-  describe("get /:id", () => {
+  describe("get /", () => {
     // Happy path
+    it("should return status code 200", async () => {
+      const response = await request(app).get("/");
+
+      expect(response.status).toBe(200);
+      expect(response.body).toHaveLength(2);
+    });
 
     // Negative testing
-    it("should return status code 500 because url parameter is invalid", async () => {
-      const response = await request(app).get("/randomId");
-
-      expect(response.status).toBe(500);
-    });
   });
 });

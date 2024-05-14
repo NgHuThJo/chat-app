@@ -2,11 +2,6 @@
 import bcryptjs from "bcryptjs";
 import debug from "debug";
 import express from "express";
-import {
-  disconnectMongoServer,
-  dropDatabase,
-  initializeMongoServer,
-} from "../../../mongoConfigTesting.js";
 import mongoose from "mongoose";
 import passport from "passport";
 import session from "express-session";
@@ -18,7 +13,7 @@ import indexRouter from "./index.js";
 // Custom code
 import { setupLocalStrategy } from "../../../utility/authentication/passport.js";
 
-const logger = debug("chat-app:test");
+const logger = debug("chat-app:index.test");
 const app = express();
 const saltLength = 10;
 
@@ -52,29 +47,19 @@ const fakeData = [
   },
 ];
 
-describe("test index routes", () => {
-  beforeAll(async () => {
-    await initializeMongoServer();
-  });
-
+describe("index routes", () => {
   beforeEach(async () => {
-    // Save fake user in data base
+    // Save fake users in data base
     try {
-      for (let userData of fakeData) {
-        const newUser = new User(userData);
-        await newUser.save();
-      }
+      await Promise.all(
+        fakeData.map((userData) => {
+          const newUser = new User(userData);
+          newUser.save();
+        })
+      );
     } catch (err) {
       logger(err);
     }
-  });
-
-  afterEach(async () => {
-    await dropDatabase();
-  });
-
-  afterAll(async () => {
-    await disconnectMongoServer();
   });
 
   describe("post /signup", () => {
@@ -114,14 +99,6 @@ describe("test index routes", () => {
       });
 
       expect(response.status).toBe(401);
-    });
-  });
-
-  describe("get /chat", () => {
-    it("should return status code 200", async () => {
-      const response = await request(app).get("/chat");
-
-      expect(response.status).toBe(200);
     });
   });
 });
