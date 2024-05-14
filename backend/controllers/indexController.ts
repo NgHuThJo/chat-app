@@ -48,17 +48,14 @@ export const loginPost = [
   }),
 ];
 
-export const chatGet = asyncHandler(async (req, res, next) => {
-  const userList = await User.find().exec();
+export const logoutPost: express.RequestHandler = (req, res, next) => {
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+  });
 
-  res.json(userList);
-});
-
-export const userGet = asyncHandler(async (req, res, next) => {
-  const user = await User.findById(req.params.id);
-
-  const { password, ...payload } = user._doc;
-
-  console.log("userget", payload);
-  res.json(payload);
-});
+  res.json({
+    message: "logout successful",
+  });
+};

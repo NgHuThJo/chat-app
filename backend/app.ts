@@ -33,14 +33,19 @@ wss.on("connection", (ws) => {
 
     switch (data.type) {
       case "addUser": {
-        onlineUsers.set(data.id, ws);
-        console.log("user added");
-        ws.send(
-          JSON.stringify({
-            type: "getUsers",
-            data: Object.keys(onlineUsers),
-          })
-        );
+        if (data.id) {
+          onlineUsers.set(data.id, ws);
+
+          console.log("user added");
+          ws.send(
+            JSON.stringify({
+              type: "getUsers",
+              data: {
+                users: [...onlineUsers.keys()],
+              },
+            })
+          );
+        }
         break;
       }
       default: {
@@ -94,8 +99,8 @@ app.use("/api", apiRouter);
 
 // For debugging purposes
 // app.use((req, res, next) => {
-//   console.log(req.session);
-//   console.log(req.user);
+//   console.log("session object: ", req.session);
+//   console.log("authenticated user object: ", req.user);
 //   next();
 // });
 

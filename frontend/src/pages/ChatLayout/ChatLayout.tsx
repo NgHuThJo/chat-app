@@ -1,6 +1,6 @@
 // Third party
 import { useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useAsyncError, useLocation } from "react-router-dom";
 // Contexts
 import { useEffect } from "react";
 import { useApiDispatchContext } from "../../utility/context/ApiContext";
@@ -13,32 +13,44 @@ import List from "../../components/List/List";
 import { GeneralObject } from "../../utility/types/utilityType";
 // Styles
 import styles from "./ChatLayout.module.css";
-import { useAuthContext } from "../../utility/context/AuthContext";
+import {
+  useAuthContext,
+  useAuthDispatchContext,
+} from "../../utility/context/AuthContext";
 
 function ChatLayout() {
   const socket = useRef();
   const location = useLocation();
   const { createSocket } = useApiDispatchContext();
   const { currentUser } = useAuthContext();
+  const { getUser } = useAuthDispatchContext();
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   useEffect(() => {
     const getSocket = () => {
       const newSocket = createSocket();
       socket.current = newSocket;
-      console.log(currentUser);
-      socket.current.addEventListener("open", (event) => {
-        pingSocketReducer(event.currentTarget, {
+      socket.current.addEventListener("open", (event: Event) => {
+        const data = {
           type: "addUser",
           id: currentUser._id,
-        });
+        };
+
+        pingSocketReducer(event.currentTarget as WebSocket, data);
       });
-      socket.current.addEventListener("message", (event) => {
-        pongSocketReducer(event.currentTarget, JSON.parse(event.data));
+      socket.current.addEventListener("message", (event: Event) => {
+        pongSocketReducer(
+          event.currentTarget as WebSocket,
+          JSON.parse(event.data)
+        );
       });
     };
 
     getSocket();
-  }, []);
+  }, [currentUser._id]);
 
   const pongSocketReducer = (socket: WebSocket, action) => {
     switch (action.type) {

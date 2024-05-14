@@ -1,5 +1,5 @@
 // Third party
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 // Contexts
 import { useApiContext } from "./ApiContext.tsx";
@@ -34,7 +34,15 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
   // Custom hook
   const { fetchData } = useFetch();
 
-  useEffect(() => {
+  const contextValue = useMemo(
+    () => ({
+      currentUser,
+      isUserLogged,
+    }),
+    [currentUser, isUserLogged]
+  );
+
+  const api = useMemo(() => {
     const getUser = async () => {
       const userId = sessionStorage.getItem("userId");
 
@@ -49,18 +57,6 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       }
     };
 
-    getUser();
-  }, []);
-
-  const contextValue = useMemo(
-    () => ({
-      currentUser,
-      isUserLogged,
-    }),
-    [currentUser, isUserLogged]
-  );
-
-  const api = useMemo(() => {
     const handleLogin = async (
       event: React.FormEvent<HTMLFormElement>,
       formData: GeneralObject,
@@ -92,15 +88,21 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       setError && setError(true);
     };
 
-    const handleLogout = () => {
-      sessionStorage.setItem("isUserLogged", JSON.stringify(false));
-      setIsUserLogged(false);
-      sessionStorage.setItem("userId", "");
-      setCurrentUser({});
-      navigate("/");
+    const handleLogout = async () => {
+      const response = await fetchData(`${apiBaseUrl}/logout`, {
+        method: "POST",
+      });
+
+      if (response) {
+        sessionStorage.setItem("isUserLogged", JSON.stringify(false));
+        setIsUserLogged(false);
+        sessionStorage.setItem("userId", "");
+        setCurrentUser({});
+        navigate("/");
+      }
     };
 
-    return { handleLogin, handleLogout };
+    return { getUser, handleLogin, handleLogout };
   }, []);
 
   return (
