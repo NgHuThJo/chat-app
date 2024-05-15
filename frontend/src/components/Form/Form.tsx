@@ -38,7 +38,7 @@ function Form({
       {...restProps}
     >
       {fields.map((field, index) => {
-        const { label, ...restProperties } = field;
+        const { error, label, ...restProperties } = field;
 
         return (
           <Fragment key={index}>

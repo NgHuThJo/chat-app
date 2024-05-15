@@ -34,7 +34,7 @@ describe("signup form", () => {
   // Negative testing
   it("should show errors", async () => {
     server.use(
-      http.post("/signup", () => {
+      http.post("/api/signup", () => {
         return HttpResponse.error();
       })
     );
@@ -43,11 +43,7 @@ describe("signup form", () => {
 
     await user.click(screen.getByRole("button"));
 
-    expect(
-      screen.getByText("Your username does not satisfy requirements.")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("Your password does not satisfy requirements.")
-    ).toBeInTheDocument();
+    expect(screen.getByText("Your username is too short.")).toBeInTheDocument();
+    expect(screen.getByText("Your password is too short.")).toBeInTheDocument();
   });
 });
