@@ -2,65 +2,22 @@
 import cors from "cors";
 import debug from "debug";
 import express, { json } from "express";
-import main from "./config/mongoConfig.js";
+import main from "@/config/mongoConfig.js";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import session from "express-session";
-import { WebSocketServer } from "ws";
 import { createProxyMiddleware } from "http-proxy-middleware";
-// Custom code
-import { setupLocalStrategy } from "./utility/authentication/passport.js";
+// Passport
+import { setupLocalStrategy } from "@/utility/authentication/passport.js";
+// WebSocket
+import "@/services/websocket/webSocketSetup.js";
 // Routers
-import apiRouter from "./routes/api.js";
+import apiRouter from "@/routes/api.js";
 
 // Entry point setup
-const logger = debug("wheres-waldo:app");
+const logger = debug("chat:app");
 const app = express();
 const port = process.env.PORT || 3000;
-const webSocketPort = process.env.WEBSOCKET_PORT || 8080;
-
-// WebSocket setup
-const wss = new WebSocketServer({ port: webSocketPort });
-const onlineUsers = new Map();
-const rooms = new Set();
-
-wss.on("connection", (ws) => {
-  console.log("connected");
-
-  ws.on("message", (payload) => {
-    const data = JSON.parse(payload);
-    console.log("received: %s", data);
-
-    switch (data.type) {
-      case "addUser": {
-        if (data.id) {
-          onlineUsers.set(data.id, ws);
-
-          console.log("user added");
-          ws.send(
-            JSON.stringify({
-              type: "getUsers",
-              data: {
-                users: [...onlineUsers.keys()],
-              },
-            })
-          );
-        }
-        break;
-      }
-      default: {
-        throw Error("Unknown type: ".concat(data.type));
-      }
-    }
-  });
-
-  ws.on("close", () => {
-    console.log("disconnected");
-    ws.send("user disconnected");
-  });
-
-  ws.on("error", console.error);
-});
 
 // App setup
 app.listen(port, () => {
@@ -80,15 +37,14 @@ setupLocalStrategy();
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
-    resave: false,
+    resave: true,
     saveUninitialized: true,
     cookie: {
       maxAge: 24 * 60 * 60 * 1000,
     },
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URL,
-      autoRemove: "interval",
-      autoRemoveInterval: 10, // In minutes (default)
+      autoRemove: "native",
     }),
   })
 );

@@ -6,14 +6,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:dev": "concurrently \"npm run server\" \"npm run client\"",
     "client": "cd frontend & npm run dev",
     "server": "cd backend & npm run serverstart"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "license": "ISC"
 }

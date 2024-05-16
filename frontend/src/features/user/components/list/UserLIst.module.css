@@ -1,0 +1,14 @@
+.layout {
+  --p-item: 1rem;
+
+  border: var(--bd-width) solid hsl(var(--c-border));
+
+  h2 {
+    padding-left: var(--p-item);
+  }
+}
+
+.user {
+  padding: var(--p-item);
+  border-bottom: var(--bd-width) solid hsl(var(--c-border));
+}

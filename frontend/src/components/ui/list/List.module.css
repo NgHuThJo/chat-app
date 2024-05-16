@@ -1,0 +1,6 @@
+.list--home {
+  composes: auto-grid from global;
+  gap: 2rem;
+  grid-auto-rows: 1fr;
+  padding-block: var(--p-container);
+}

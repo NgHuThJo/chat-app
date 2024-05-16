@@ -1,0 +1,9 @@
+.default {
+  display: grid;
+  grid-auto-rows: 1fr auto;
+  background-color: red;
+
+  input[type="text"] {
+    padding: 1.5rem;
+  }
+}

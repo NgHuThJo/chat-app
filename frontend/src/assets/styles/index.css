@@ -1,20 +1,20 @@
 /* Custom properties */
 :root {
   /* Box model */
-  --max-width-content: 100rem;
+  --p-container: 2rem;
+  --bd-width: 1px;
+  --max-w-content: 80rem;
   --flow-spacing: 1em;
-  --padding-container: 2rem;
 
   /* Grid */
-  --auto-grid-column-size: 20rem;
+  --auto-grid-column-w: 20rem;
 
-  --macro-grid-breakout-max-width: 80rem;
-  --macro-grid-content-max-width: 60rem;
-  --macro-grid-breakout-column-width: calc(
-    (var(--macro-grid-breakout-max-width) - var(--macro-grid-content-max-width)) /
-      2
+  --macro-grid-breakout-max-w: 80rem;
+  --macro-grid-content-max-w: 60rem;
+  --macro-grid-breakout-column-w: calc(
+    (var(--macro-grid-breakout-max-w) - var(--macro-grid-content-max-w)) / 2
   );
-  --macro-grid-padding-inline: 2rem;
+  --macro-grid-p-inline: 2rem;
 
   /* Typography */
   --ff-body: system-ui, sans-serif;
@@ -25,8 +25,10 @@
   --fs-body: 1rem;
 
   /* Colors */
-  --c-link: 201 94% 27%;
+  --c-border: 218 20% 25%;
+
   --c-root: 216 12% 67%;
+  --c-link: 201 94% 27%;
 
   --bgc-button: 201 94% 27%;
   --bgc-input: 222 19% 27%;

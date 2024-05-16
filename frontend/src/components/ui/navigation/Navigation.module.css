@@ -1,0 +1,12 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: var(--p-container);
+  background-color: hsl(var(--bgc-nav));
+
+  > :last-child {
+    display: flex;
+    gap: 1rem;
+    margin-left: auto;
+  }
+}

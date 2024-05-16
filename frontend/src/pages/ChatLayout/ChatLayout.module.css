@@ -1,5 +1,0 @@
-.default {
-  composes: grid from global;
-
-  grid-template-columns: min-content 1fr;
-}

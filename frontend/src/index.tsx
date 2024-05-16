@@ -1,17 +1,17 @@
 // React
 import React from "react";
-// Third party
 import ReactDOM from "react-dom/client";
-// Contexts
-// Components
-import { Router } from "./pages/Router.js";
-// Styles
-import "./assets/styles/index.css";
-import "./assets/styles/layout.css";
-import "./assets/styles/box-model.css";
-import "./assets/styles/typography.css";
+import { Router } from "@/routes";
+// Global styles
+import "@/assets";
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root");
+
+if (!root) {
+  throw new Error("DOM root not found");
+}
+
+ReactDOM.createRoot(root).render(
   <React.StrictMode>
     <Router />
   </React.StrictMode>

@@ -1,7 +1,0 @@
-.content {
-  composes: container grid from global;
-
-  > :not(:first-child) {
-    margin-top: 1em;
-  }
-}

@@ -1,0 +1,6 @@
+.default {
+  display: grid;
+  grid-template-columns: 20rem 1fr;
+  margin-bottom: var(--p-container);
+  border: var(--bd-width) solid hsl(var(--c-border));
+}

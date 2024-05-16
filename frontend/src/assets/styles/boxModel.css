@@ -1,0 +1,25 @@
+/* Margin */
+.mx-auto {
+  margin: 0 auto;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+/* Document flow spacing */
+.flow-spacing {
+  > * + * {
+    margin-top: var(--flow-spacing);
+  }
+}
+
+/* Container */
+.container {
+  width: min(var(--max-w-content), 100% - 2 * var(--p-container));
+  margin: 0 auto;
+}

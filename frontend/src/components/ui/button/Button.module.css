@@ -1,0 +1,10 @@
+.default {
+  font-weight: var(--fw-button);
+  background-color: hsl(var(--bgc-button));
+}
+
+.submit {
+  composes: default;
+  padding: 1rem 3rem;
+  border-radius: 0.5rem;
+}

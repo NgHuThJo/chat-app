@@ -1,0 +1,5 @@
+.content {
+  composes: container from global;
+
+  display: grid;
+}
