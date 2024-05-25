@@ -26,14 +26,18 @@ wss.on("connection", (ws) => {
       case "addUser": {
         onlineUsers.set(data.id, ws);
 
-        ws.send(
-          JSON.stringify({
-            type: "getUsers",
-            data: {
-              users: [...onlineUsers.keys()],
-            },
-          })
-        );
+        wss.clients.forEach((client) => {
+          if (client.readyState === WebSocketServer.OPEN) {
+            client.send(
+              JSON.stringify({
+                type: "getUsers",
+                data: {
+                  users: [...onlineUsers.keys()],
+                },
+              })
+            );
+          }
+        });
 
         break;
       }
@@ -73,7 +77,7 @@ wss.on("connection", (ws) => {
 
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocketServer.OPEN) {
-        ws.send(data);
+        client.send(data);
       }
     });
 

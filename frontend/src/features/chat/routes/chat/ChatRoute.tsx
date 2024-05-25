@@ -10,6 +10,7 @@ import { ChatWelcome } from "../../components/welcome/ChatWelcome";
 import { UserList } from "@/features/user/components/list/UserList";
 // Feature specifics
 import { createSocket } from "../../api/webSocket";
+import { getUsers } from "@/features/user/api/list";
 // Types
 import { GeneralObject } from "@/types";
 
@@ -19,7 +20,15 @@ export function ChatRoute() {
   const { currentUser } = useAuthContext();
   const socket = useRef<WebSocket>();
 
-  useEffect(() => {});
+  useEffect(() => {
+    const getAllUsers = async () => {
+      const response = await getUsers();
+
+      setUsers(response);
+    };
+
+    getAllUsers();
+  }, []);
 
   useEffect(() => {
     if (currentUser) {
@@ -76,7 +85,11 @@ export function ChatRoute() {
 
   return (
     <ChatLayout>
-      <UserList onlineUsersId={onlineUsersId} />
+      <UserList
+        currentUser={currentUser}
+        onlineUsersId={onlineUsersId}
+        users={users}
+      />
       {isTrue ? <ChatRoom /> : <ChatWelcome />}
     </ChatLayout>
   );

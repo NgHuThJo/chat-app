@@ -22,6 +22,7 @@ function useAuthDispatchContext() {
 function AuthContextProvider({ children }: ComponentBaseProps) {
   // State
   const [currentUser, setCurrentUser] = useState<OptionalObject>(null);
+  const [loading, setLoading] = useState<Boolean>(true);
   // React Router
   const location = useLocation();
   const navigate = useNavigate();
@@ -32,17 +33,21 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
     const getCurrentUser = async () => {
       const userId = sessionStorage.getItem("userId");
 
-      if (!userId) {
-        return;
+      try {
+        if (!userId) {
+          return;
+        }
+
+        const parsedUserId = JSON.parse(userId);
+
+        const response = await fetchData(
+          `${import.meta.env.VITE_API_URL}/user/${parsedUserId}`
+        );
+
+        response && setCurrentUser(response);
+      } finally {
+        setLoading(false);
       }
-
-      const parsedUserId = JSON.parse(userId);
-
-      const response = await fetchData(
-        `${import.meta.env.VITE_API_URL}/user/${parsedUserId}`
-      );
-
-      response && setCurrentUser(response);
     };
 
     getCurrentUser();
@@ -84,7 +89,7 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
 
         sessionStorage.setItem("userId", JSON.stringify(response._id));
         setCurrentUser(response);
-        return navigate(origin);
+        return navigate(origin, { replace: true });
       }
 
       setError && setError(true);
@@ -101,7 +106,7 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
       if (response) {
         sessionStorage.removeItem("userId");
         setCurrentUser(null);
-        return navigate("/");
+        return navigate("/", { replace: true });
       }
     };
 
@@ -111,7 +116,7 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
   return (
     <AuthDispatchContext.Provider value={api}>
       <AuthContext.Provider value={contextValue}>
-        {children}
+        {!loading && children}
       </AuthContext.Provider>
     </AuthDispatchContext.Provider>
   );
