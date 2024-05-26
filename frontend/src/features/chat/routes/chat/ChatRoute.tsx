@@ -6,17 +6,20 @@ import { useAuthContext } from "@/providers/context";
 // Components
 import { ChatLayout } from "@/components/layouts/chat/ChatLayout";
 import { ChatRoom } from "../../components/room/ChatRoom";
+import { ChatSidebar } from "../../components/sidebar/ChatSidebar";
 import { ChatWelcome } from "../../components/welcome/ChatWelcome";
-import { UserList } from "@/features/user/components/list/UserList";
 // Feature specifics
 import { createSocket } from "../../api/webSocket";
 import { getUsers } from "@/features/user/api/list";
 // Types
 import { GeneralObject } from "@/types";
+import { getChatRooms } from "../../api/chat";
 
 export function ChatRoute() {
-  const [users, setUsers] = useState([]);
-  const [onlineUsersId, setOnlineUsersId] = useState([]);
+  const [chatRooms, setChatRooms] = useState<GeneralObject[]>([]);
+  const [currentChat, setCurrentChat] = useState<GeneralObject>();
+  const [onlineUsersId, setOnlineUsersId] = useState<string[]>();
+  const [users, setUsers] = useState<GeneralObject[]>([]);
   const { currentUser } = useAuthContext();
   const socket = useRef<WebSocket>();
 
@@ -27,28 +30,40 @@ export function ChatRoute() {
       setUsers(response);
     };
 
-    getAllUsers();
+    const getAllChatRooms = async () => {
+      const response = await getChatRooms(currentUser._id);
+
+      setChatRooms(response);
+    };
+
+    Promise.all([getAllUsers(), getAllChatRooms()]);
   }, []);
 
   useEffect(() => {
-    if (currentUser) {
-      const newSocket = createSocket();
-      socket.current = newSocket;
+    const newSocket = createSocket();
+    socket.current = newSocket;
 
-      socket.current.addEventListener("open", (event: Event) => {
-        const data = {
-          type: "addUser",
-          id: currentUser._id,
-        };
+    socket.current.addEventListener("open", (event: Event) => {
+      const data = {
+        type: "addUser",
+        id: currentUser._id,
+      };
 
-        pingSocketReducer(event.currentTarget as WebSocket, data);
-      });
+      pingSocketReducer(event.currentTarget as WebSocket, data);
+    });
 
-      socket.current.addEventListener("message", (event: MessageEvent) => {
-        pongSocketReducer(event.currentTarget as WebSocket, event.data);
-      });
-    }
-  }, [currentUser]);
+    socket.current.addEventListener("message", (event: MessageEvent) => {
+      pongSocketReducer(event.currentTarget as WebSocket, event.data);
+    });
+
+    socket.current.addEventListener("close", (event: CloseEvent) => {
+      console.log(event.code, event.reason, event.wasClean);
+    });
+
+    return () => {
+      socket.current.close();
+    };
+  }, []);
 
   const pongSocketReducer = (socket: WebSocket, action: string) => {
     const parsedAction = JSON.parse(action);
@@ -81,16 +96,17 @@ export function ChatRoute() {
     }
   };
 
-  const isTrue = false;
-
   return (
     <ChatLayout>
-      <UserList
+      <ChatSidebar
+        changeChat={setCurrentChat}
+        chatRooms={chatRooms}
+        setChatRooms={setChatRooms}
         currentUser={currentUser}
         onlineUsersId={onlineUsersId}
         users={users}
       />
-      {isTrue ? <ChatRoom /> : <ChatWelcome />}
+      {currentChat ? <ChatRoom /> : <ChatWelcome />}
     </ChatLayout>
   );
 }

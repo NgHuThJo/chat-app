@@ -2,7 +2,12 @@ import { model, Schema } from "mongoose";
 
 const ChatRoomSchema = new Schema(
   {
-    members: Array,
+    members: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
   },
   {
     timestamps: true,

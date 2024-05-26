@@ -20,14 +20,14 @@ wss.on("connection", (ws) => {
 
   ws.on("message", (payload: string) => {
     const data = JSON.parse(payload);
-    console.log("received: %s", data);
+    console.log("received: ", data);
 
     switch (data.type) {
       case "addUser": {
         onlineUsers.set(data.id, ws);
 
         wss.clients.forEach((client) => {
-          if (client.readyState === WebSocketServer.OPEN) {
+          if (client.readyState === WebSocket.OPEN) {
             client.send(
               JSON.stringify({
                 type: "getUsers",
@@ -76,7 +76,7 @@ wss.on("connection", (ws) => {
     });
 
     wss.clients.forEach((client) => {
-      if (client.readyState === WebSocketServer.OPEN) {
+      if (client.readyState === WebSocket.OPEN) {
         client.send(data);
       }
     });

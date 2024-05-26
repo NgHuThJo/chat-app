@@ -61,10 +61,10 @@ app.use("/api", apiRouter);
 // });
 
 // Proxy for initial GET request to Express server for React app
-app.use(
-  "/",
-  createProxyMiddleware({
-    target: process.env.PROXY_URL,
-    changeOrigin: true,
-  })
-);
+// app.use(
+//   "/",
+//   createProxyMiddleware({
+//     target: process.env.PROXY_URL,
+//     changeOrigin: true,
+//   })
+// );

@@ -13,7 +13,7 @@ import { validateInput } from "../utility/inputValidation/validationChains.js";
 const logger = debug("chat-app:indexController");
 const saltLength = 10;
 
-export const signupPost = [
+export const postSignup = [
   validateInput("username"),
   validateInput("password"),
   asyncHandler(async (req, res, next) => {
@@ -39,7 +39,7 @@ export const signupPost = [
   }),
 ];
 
-export const loginPost = [
+export const postLogin = [
   passport.authenticate("local"),
   asyncHandler(async (req, res, next) => {
     const { password, ...payload } = req.user._doc;
@@ -48,7 +48,7 @@ export const loginPost = [
   }),
 ];
 
-export const logoutPost: express.RequestHandler = (req, res, next) => {
+export const postLogout: express.RequestHandler = (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err);

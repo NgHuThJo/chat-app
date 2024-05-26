@@ -4,14 +4,13 @@ const UserSchema = new Schema({
   username: {
     type: String,
     required: true,
+    trim: true,
     unique: true,
   },
   password: {
     type: String,
     required: true,
-    value: {
-      minlength: 4,
-    },
+    minLength: [4, "Password must be at least 4 characters"],
   },
 });
 

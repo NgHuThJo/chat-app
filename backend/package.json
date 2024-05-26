@@ -8,9 +8,9 @@
   "scripts": {
     "start": "node ./dist/app.js",
     "devstart": "tsx --watch --env-file .env app.ts",
-    "serverstart": "set DEBUG=wheres-waldo:* & npm run devstart",
+    "serverstart": "set DEBUG=chat-app:* & npm run devstart",
     "build": "tsc",
-    "test": "set DEBUG=wheres-waldo:* & vitest"
+    "test": "set DEBUG=chat-app:* & vitest"
   },
   "keywords": [],
   "author": "",
