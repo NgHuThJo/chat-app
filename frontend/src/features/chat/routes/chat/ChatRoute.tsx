@@ -106,7 +106,15 @@ export function ChatRoute() {
         onlineUsersId={onlineUsersId}
         users={users}
       />
-      {currentChat ? <ChatRoom /> : <ChatWelcome />}
+      {currentChat ? (
+        <ChatRoom
+          currentChat={currentChat}
+          currentUser={currentUser}
+          socket={socket}
+        />
+      ) : (
+        <ChatWelcome />
+      )}
     </ChatLayout>
   );
 }

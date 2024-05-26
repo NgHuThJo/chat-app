@@ -8,3 +8,7 @@ export function getChatRooms(userId: string) {
 export function createChatRoom(data: GeneralObject) {
   return apiClient.post("/chat/room", data);
 }
+
+export function getChatMessages(roomId: string) {
+  return apiClient.get(`/chat/room/${roomId}`);
+}

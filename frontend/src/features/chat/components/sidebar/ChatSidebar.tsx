@@ -3,6 +3,8 @@ import { SetStateAction, useEffect, useState } from "react";
 // Components
 // API
 import { createChatRoom } from "../../api/chat";
+// Utility
+import { resolveClassName } from "@/utils/className";
 // Types
 import { GeneralObject } from "@/types";
 // Styles
@@ -13,7 +15,7 @@ type ChatSidebar = {
   chatRooms: GeneralObject[];
   setChatRooms: React.Dispatch<SetStateAction<GeneralObject[]>>;
   currentUser: GeneralObject;
-  onlineUsersId: string[];
+  onlineUsersId: string[] | undefined;
   users: GeneralObject[];
 };
 
@@ -25,24 +27,16 @@ export function ChatSidebar({
   onlineUsersId,
   users,
 }: ChatSidebar) {
-  const [contacts, setContacts] = useState<GeneralObject[]>([]);
+  const [selectedChat, setSelectedChat] = useState<string>();
   const [nonContacts, setNonContacts] = useState<GeneralObject[]>([]);
 
   useEffect(() => {
+    if (!onlineUsersId) {
+      return;
+    }
+
     const onlineUsers = users.filter(
       (user) => user._id !== currentUser._id && onlineUsersId.includes(user._id)
-    );
-
-    setContacts(
-      onlineUsers.filter((user) => {
-        for (const room of chatRooms) {
-          if (room.members.includes(user._id)) {
-            return true;
-          }
-        }
-
-        return false;
-      })
     );
 
     setNonContacts(
@@ -56,7 +50,7 @@ export function ChatSidebar({
         return true;
       })
     );
-  }, [users]);
+  }, [onlineUsersId]);
 
   const handleCreateChatRoom = async (user: GeneralObject) => {
     const members = {
@@ -67,20 +61,31 @@ export function ChatSidebar({
     const response = await createChatRoom(members);
 
     changeChat(response);
+    setSelectedChat(response._id);
     setChatRooms((prev) => [...prev, response]);
+  };
+
+  const changeCurrentChat = (room: GeneralObject) => {
+    setSelectedChat(room._id);
+    changeChat(room);
   };
 
   return (
     <aside className={styles.layout}>
       <h2>Chats</h2>
       <ul>
-        {contacts.map((user) => (
+        {chatRooms.map((room) => (
           <li
-            className={styles.user}
-            key={user._id}
-            onClick={() => changeChat(user)}
+            className={resolveClassName(
+              {
+                module: ["room", ...(selectedChat ? ["selected"] : [])],
+              },
+              styles
+            )}
+            key={room._id}
+            onClick={() => changeCurrentChat(room)}
           >
-            {user._id}
+            {room._id}
           </li>
         ))}
       </ul>

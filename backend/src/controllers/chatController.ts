@@ -3,6 +3,7 @@ import asyncHandler from "express-async-handler";
 import debug from "debug";
 import * as express from "express";
 // Models
+import ChatMessage from "../models/chatMessage.js";
 import ChatRoom from "../models/chatRoom.js";
 
 const logger = debug("chat-app:chatController");
@@ -33,4 +34,16 @@ export const createChatRoom = asyncHandler(async (req, res, next) => {
   });
 
   res.status(201).json(newChatRoom);
+});
+
+export const getChatMessages = asyncHandler(async (req, res, next) => {
+  const chatRoomMessages = await ChatMessage.find({
+    chatRoomId: req.params.roomId,
+  })
+    .sort({ created: 1 })
+    .exec();
+
+  console.log("chat messages", chatRoomMessages);
+
+  res.json(chatRoomMessages);
 });

@@ -7,6 +7,11 @@ const ChatMessageSchema = new Schema({
   },
   sender: String,
   message: String,
+  created: {
+    type: Date,
+    default: Date.now(),
+    immutable: true,
+  },
 });
 
 export default model("ChatMessage", ChatMessageSchema);

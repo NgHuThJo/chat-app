@@ -8,7 +8,11 @@
   }
 }
 
-.user {
+.room {
   padding: var(--p-item);
   border-bottom: var(--bd-width) solid hsl(var(--c-border));
+}
+
+.selected {
+  color: hsl(var(--c-error));
 }

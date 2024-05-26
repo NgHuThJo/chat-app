@@ -1,4 +1,3 @@
-import { isObjectEmpty } from "./object";
 import { hasWhiteSpaces } from "./string";
 import { GeneralObject } from "@/types";
 
