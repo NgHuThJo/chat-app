@@ -3,15 +3,15 @@ import { Fragment, useState } from "react";
 // Utility
 import { resolveClassName } from "@/utils/className";
 // Types
-import { ComponentBaseProps, GeneralObject } from "@/types";
+import { ComponentBaseProps, GenericObject } from "@/types";
 // Styles
 import styles from "./Form.module.css";
 
 type FormProps = ComponentBaseProps & {
-  fields: GeneralObject[];
+  fields: GenericObject[];
   onSubmit(
     event: React.FormEvent<HTMLFormElement>,
-    formData: GeneralObject,
+    formData: GenericObject,
     setError?: React.Dispatch<React.SetStateAction<Boolean>>
   ): void;
 };
@@ -24,7 +24,7 @@ export function Form({
   ...restProps
 }: FormProps) {
   const [error, setError] = useState<Boolean>(false);
-  const [formData, setFormData] = useState<GeneralObject>({});
+  const [formData, setFormData] = useState<GenericObject>({});
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;

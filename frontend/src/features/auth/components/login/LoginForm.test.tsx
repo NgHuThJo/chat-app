@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { render, screen, waitFor } from "@testing-library/react";
 import { http, HttpResponse } from "msw";
 // Types
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 // Config
 import { routesConfig } from "@/routes";
 // Server mock
@@ -13,7 +13,7 @@ import { server } from "@/test/server";
 describe("signup form", () => {
   type RouterReturnType = ReturnType<typeof createMemoryRouter>;
   let router: RouterReturnType;
-  let user: GeneralObject;
+  let user: GenericObject;
 
   beforeAll(() => {
     user = userEvent.setup();

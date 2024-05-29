@@ -1,5 +1,5 @@
 import { hasWhiteSpaces } from "./string";
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 
 type ModuleStyles = {
   module: string[];
@@ -15,7 +15,7 @@ export type CombinedStyles = ModuleStyles | GlobalStyles;
 
 export function resolveClassName(
   classes: CombinedStyles | undefined,
-  styles: GeneralObject<string>
+  styles: GenericObject<string>
 ) {
   try {
     const moduleStyles =

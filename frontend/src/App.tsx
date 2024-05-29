@@ -2,11 +2,14 @@
 import { Outlet } from "react-router-dom";
 // Context
 import { AuthContextProvider } from "@/providers/context";
+import { WebSocketContextProvider } from "@/providers/context";
 
 export function App() {
   return (
-    <AuthContextProvider>
-      <Outlet />
-    </AuthContextProvider>
+    <WebSocketContextProvider>
+      <AuthContextProvider>
+        <Outlet />
+      </AuthContextProvider>
+    </WebSocketContextProvider>
   );
 }

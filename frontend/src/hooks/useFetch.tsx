@@ -1,14 +1,14 @@
 // React
 import { useState } from "react";
 // Types
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 
 export function useFetch() {
-  const [data, setData] = useState<GeneralObject>();
+  const [data, setData] = useState<GenericObject>();
   const [error, setError] = useState<Error>();
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async (url: string, options?: GeneralObject) => {
+  const fetchData = async (url: string, options?: GenericObject) => {
     try {
       const response = await fetch(url, {
         mode: "cors",

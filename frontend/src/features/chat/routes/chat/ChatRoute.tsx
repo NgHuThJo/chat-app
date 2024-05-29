@@ -1,27 +1,32 @@
 // Third party
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 // Context
-import { useAuthContext } from "@/providers/context";
+import {
+  useAuthContext,
+  useWebSocketContext,
+  useWebSocketDispatchContext,
+} from "@/providers/context";
 // Custom hooks
 // Components
 import { ChatLayout } from "@/components/layouts/chat/ChatLayout";
 import { ChatRoom } from "../../components/room/ChatRoom";
 import { ChatSidebar } from "../../components/sidebar/ChatSidebar";
 import { ChatWelcome } from "../../components/welcome/ChatWelcome";
-// Feature specifics
-import { createSocket } from "../../api/webSocket";
+// API
 import { getUsers } from "@/features/user/api/list";
 // Types
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 import { getChatRooms } from "../../api/chat";
 
 export function ChatRoute() {
-  const [chatRooms, setChatRooms] = useState<GeneralObject[]>([]);
-  const [currentChat, setCurrentChat] = useState<GeneralObject>();
+  const [chatRooms, setChatRooms] = useState<GenericObject[]>([]);
+  const [currentChat, setCurrentChat] = useState<GenericObject>();
   const [onlineUsersId, setOnlineUsersId] = useState<string[]>();
-  const [users, setUsers] = useState<GeneralObject[]>([]);
+  const [users, setUsers] = useState<GenericObject[]>([]);
   const { currentUser } = useAuthContext();
-  const socket = useRef<WebSocket>();
+  const { socket, pingSocketReducer, pongSocketReducer } =
+    useWebSocketContext();
+  const { createSocket } = useWebSocketDispatchContext();
 
   useEffect(() => {
     const getAllUsers = async () => {
@@ -40,61 +45,47 @@ export function ChatRoute() {
   }, []);
 
   useEffect(() => {
-    const newSocket = createSocket();
-    socket.current = newSocket;
+    if (socket.current) {
+      return;
+    }
 
-    socket.current.addEventListener("open", (event: Event) => {
+    createSocket();
+
+    pingSocketReducer.addUser = (stringifiedData: string) => {
+      socket.current.send(stringifiedData);
+    };
+
+    pongSocketReducer.getUsers = (parsedData: GenericObject) => {
+      console.log("Server got users: ", parsedData);
+      const { users } = parsedData;
+      setOnlineUsersId(users);
+    };
+
+    pongSocketReducer.getMessage = (parsedData: GenericObject) => {
+      console.log("Server got message: ", parsedData);
+    };
+
+    socket.current.addEventListener("open", () => {
       const data = {
         type: "addUser",
         id: currentUser._id,
       };
 
-      pingSocketReducer(event.currentTarget as WebSocket, data);
+      const stringifiedData = JSON.stringify(data);
+
+      pingSocketReducer.addUser(stringifiedData);
     });
 
     socket.current.addEventListener("message", (event: MessageEvent) => {
-      pongSocketReducer(event.currentTarget as WebSocket, event.data);
+      const parsedEventData = JSON.parse(event.data);
+
+      pongSocketReducer[parsedEventData.type](parsedEventData.data);
     });
 
     socket.current.addEventListener("close", (event: CloseEvent) => {
       console.log(event.code, event.reason, event.wasClean);
     });
-
-    return () => {
-      socket.current.close();
-    };
   }, []);
-
-  const pongSocketReducer = (socket: WebSocket, action: string) => {
-    const parsedAction = JSON.parse(action);
-
-    switch (parsedAction.type) {
-      case "getUsers": {
-        console.log("Server got users", parsedAction);
-        const { users } = parsedAction.data;
-        setOnlineUsersId(users);
-
-        break;
-      }
-      default: {
-        throw Error("Unknown action: ".concat(parsedAction.type));
-      }
-    }
-  };
-
-  const pingSocketReducer = (socket: WebSocket, action: GeneralObject) => {
-    const stringifiedAction = JSON.stringify(action);
-
-    switch (action.type) {
-      case "addUser": {
-        socket.send(stringifiedAction);
-        break;
-      }
-      default: {
-        throw Error("Unknown action: ".concat(action.type));
-      }
-    }
-  };
 
   return (
     <ChatLayout>
@@ -110,6 +101,8 @@ export function ChatRoute() {
         <ChatRoom
           currentChat={currentChat}
           currentUser={currentUser}
+          pingSocketReducer={pingSocketReducer}
+          pongSocketReducer={pongSocketReducer}
           socket={socket}
         />
       ) : (

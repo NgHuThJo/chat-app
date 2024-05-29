@@ -1,6 +1,6 @@
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 
-async function fetchWrapper(endpoint: string, options?: GeneralObject) {
+async function fetchWrapper(endpoint: string, options?: GenericObject) {
   try {
     const response = await fetch(`${import.meta.env.VITE_API_URL}${endpoint}`, {
       mode: "cors",
@@ -18,22 +18,26 @@ async function fetchWrapper(endpoint: string, options?: GeneralObject) {
 }
 
 export const apiClient = {
-  get: (endpoint: string) => fetchWrapper(endpoint),
-  delete: (endpoint: string) =>
+  get: (endpoint: string, overrides?: GenericObject) =>
+    fetchWrapper(endpoint, overrides),
+  delete: (endpoint: string, overrides?: GenericObject) =>
     fetchWrapper(endpoint, {
       method: "DELETE",
+      ...overrides,
     }),
-  post: (endpoint: string, data: GeneralObject) =>
+  post: (endpoint: string, data: GenericObject, overrides?: GenericObject) =>
     fetchWrapper(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
+      ...overrides,
     }),
-  put: (endpoint: string, data: GeneralObject) =>
+  put: (endpoint: string, data: GenericObject, overrides?: GenericObject) =>
     fetchWrapper(endpoint, {
       method: "PUT",
       body: JSON.stringify(data),
+      ...overrides,
     }),
 };

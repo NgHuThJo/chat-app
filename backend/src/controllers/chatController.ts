@@ -13,18 +13,6 @@ export const getChatRooms = asyncHandler(async (req, res, next) => {
     members: { $in: [req.params.userId] },
   }).exec();
 
-  // console.log("chatRoomList", chatRoomList);
-
-  // const filteredList: string[] = [];
-
-  // for (let document of chatRoomList) {
-  //   for (let value of Object.values(document)) {
-  //     if (value !== req.params.userId) {
-  //       filteredList.push(value);
-  //     }
-  //   }
-  // }
-
   res.json(chatRoomList);
 });
 
@@ -43,7 +31,11 @@ export const getChatMessages = asyncHandler(async (req, res, next) => {
     .sort({ created: 1 })
     .exec();
 
-  console.log("chat messages", chatRoomMessages);
-
   res.json(chatRoomMessages);
+});
+
+export const createChatMessage = asyncHandler(async (req, res, next) => {
+  const newChatMessage = await ChatMessage.create(req.body);
+
+  res.status(201).json(newChatMessage);
 });

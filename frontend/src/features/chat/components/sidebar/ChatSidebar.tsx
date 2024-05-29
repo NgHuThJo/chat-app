@@ -6,17 +6,17 @@ import { createChatRoom } from "../../api/chat";
 // Utility
 import { resolveClassName } from "@/utils/className";
 // Types
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 // Styles
 import styles from "./ChatSidebar.module.css";
 
 type ChatSidebar = {
-  changeChat: React.Dispatch<SetStateAction<GeneralObject>>;
-  chatRooms: GeneralObject[];
-  setChatRooms: React.Dispatch<SetStateAction<GeneralObject[]>>;
-  currentUser: GeneralObject;
+  changeChat: React.Dispatch<SetStateAction<GenericObject>>;
+  chatRooms: GenericObject[];
+  setChatRooms: React.Dispatch<SetStateAction<GenericObject[]>>;
+  currentUser: GenericObject;
   onlineUsersId: string[] | undefined;
-  users: GeneralObject[];
+  users: GenericObject[];
 };
 
 export function ChatSidebar({
@@ -28,7 +28,7 @@ export function ChatSidebar({
   users,
 }: ChatSidebar) {
   const [selectedChat, setSelectedChat] = useState<string>();
-  const [nonContacts, setNonContacts] = useState<GeneralObject[]>([]);
+  const [nonContacts, setNonContacts] = useState<GenericObject[]>([]);
 
   useEffect(() => {
     if (!onlineUsersId) {
@@ -52,7 +52,7 @@ export function ChatSidebar({
     );
   }, [onlineUsersId]);
 
-  const handleCreateChatRoom = async (user: GeneralObject) => {
+  const handleCreateChatRoom = async (user: GenericObject) => {
     const members = {
       senderId: currentUser._id,
       receiverId: user._id,
@@ -65,7 +65,7 @@ export function ChatSidebar({
     setChatRooms((prev) => [...prev, response]);
   };
 
-  const changeCurrentChat = (room: GeneralObject) => {
+  const changeCurrentChat = (room: GenericObject) => {
     setSelectedChat(room._id);
     changeChat(room);
   };

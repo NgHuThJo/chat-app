@@ -42,19 +42,21 @@ wss.on("connection", (ws) => {
         break;
       }
       case "sendMessage": {
-        const { senderId, receiverId, message } = data;
-        const sendUserSocket = onlineUsers.get(receiverId);
+        const { receivers, type, ...rest } = data;
 
-        if (sendUserSocket) {
-          sendUserSocket.send(
-            JSON.stringify({
-              type: "sendMessage",
-              data: {
-                senderId,
-                message,
-              },
-            })
-          );
+        console.log(receivers);
+
+        for (let receiverId of receivers) {
+          const receiverSocket = onlineUsers.get(receiverId);
+
+          if (receiverSocket) {
+            receiverSocket.send(
+              JSON.stringify({
+                type: "getMessage",
+                data: rest,
+              })
+            );
+          }
         }
 
         break;

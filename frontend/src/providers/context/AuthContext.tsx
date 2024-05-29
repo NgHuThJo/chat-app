@@ -4,9 +4,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 // Custom hooks
 import { useFetch } from "@/hooks/useFetch";
 // Types
-import { ComponentBaseProps, GeneralObject } from "@/types";
+import { ContextProps, GenericObject } from "@/types";
 
-type OptionalObject = GeneralObject | null;
+type OptionalObject = GenericObject | null;
 
 const AuthContext = createContext({});
 const AuthDispatchContext = createContext({});
@@ -19,7 +19,7 @@ function useAuthDispatchContext() {
   return useContext(AuthDispatchContext);
 }
 
-function AuthContextProvider({ children }: ComponentBaseProps) {
+function AuthContextProvider({ children }: ContextProps) {
   // State
   const [currentUser, setCurrentUser] = useState<OptionalObject>(null);
   const [loading, setLoading] = useState<Boolean>(true);
@@ -31,9 +31,9 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
 
   useEffect(() => {
     const getCurrentUser = async () => {
-      const userId = sessionStorage.getItem("userId");
-
       try {
+        const userId = sessionStorage.getItem("userId");
+
         if (!userId) {
           return;
         }
@@ -67,12 +67,11 @@ function AuthContextProvider({ children }: ComponentBaseProps) {
 
     const handleLogin = async (
       event: React.FormEvent<HTMLFormElement>,
-      formData: GeneralObject,
+      formData: GenericObject,
       setError?: React.Dispatch<React.SetStateAction<Boolean>>
     ) => {
       event.preventDefault();
 
-      // Current implementation of fetchData returns JSON or undefined
       const response = await fetchData(
         `${import.meta.env.VITE_API_URL}/login`,
         {

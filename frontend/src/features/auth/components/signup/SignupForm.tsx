@@ -7,7 +7,7 @@ import { Form } from "@/components/ui/form";
 // APIs
 import { createSignup } from "../../api/signup";
 // Types
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 
 // Input fields
 const inputFields = [
@@ -34,7 +34,7 @@ export function SignupForm() {
 
   const onSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
-    formData: GeneralObject,
+    formData: GenericObject,
     setError?: React.Dispatch<React.SetStateAction<Boolean>>
   ) => {
     event.preventDefault();

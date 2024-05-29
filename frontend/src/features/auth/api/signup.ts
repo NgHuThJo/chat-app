@@ -1,6 +1,6 @@
 import { apiClient } from "@/lib/apiClient";
-import { GeneralObject } from "@/types";
+import { GenericObject } from "@/types";
 
-export function createSignup(data: GeneralObject) {
+export function createSignup(data: GenericObject) {
   return apiClient.post("/signup", data);
 }
