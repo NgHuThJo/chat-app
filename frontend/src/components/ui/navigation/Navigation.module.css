@@ -4,6 +4,11 @@
   padding: var(--p-container);
   background-color: hsl(var(--bgc-nav));
 
+  h1 a {
+    text-decoration: none;
+    color: currentColor;
+  }
+
   > :last-child {
     display: flex;
     gap: 1rem;

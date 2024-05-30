@@ -8,7 +8,6 @@ import { createChatMessage, getChatMessages } from "../../api/chat";
 import { GenericObject } from "@/types";
 // Styles
 import styles from "./ChatRoom.module.css";
-import { i } from "vitest/dist/reporters-MmQN-57K.js";
 
 type ChatRoom = {
   currentChat: GenericObject;
@@ -86,10 +85,19 @@ export function ChatRoom({
 
   return (
     <section className={styles.default}>
-      <ul>
+      <ul className={styles["scroll-container"]}>
         {chatMessages.map((message) => (
-          <li key={message._id}>
-            <p>{message.sender}</p>
+          <li
+            className={
+              styles[
+                message.sender === currentUser.username
+                  ? "message-left"
+                  : "message-right"
+              ]
+            }
+            key={message._id}
+          >
+            <h3>{message.sender}</h3>
             <p>{message.message}</p>
             <p>{message.created}</p>
           </li>

@@ -4,7 +4,7 @@ type ObjectKey = string | number | symbol;
 
 export type ComponentBaseProps = {
   children?: React.ReactNode;
-  className?: CombinedStyles & string;
+  className?: CombinedStyles | string;
   restProps?: GenericObject;
 };
 

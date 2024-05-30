@@ -1,5 +1,5 @@
 .content {
   composes: container from global;
-
   display: grid;
+  padding-bottom: var(--p-container);
 }

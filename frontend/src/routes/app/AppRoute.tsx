@@ -16,7 +16,9 @@ export function AppRoute() {
   return (
     <>
       <Navigation className={{ module: ["header"] }}>
-        <h1>Chat App</h1>
+        <h1>
+          <Link to="/">Chat App</Link>
+        </h1>
         <div>
           <Link to="/">Home</Link>
           {!currentUser && <Link to="login">Login</Link>}

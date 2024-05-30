@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { get, model, Schema } from "mongoose";
 
 const ChatMessageSchema = new Schema({
   chatRoomId: {
@@ -9,9 +9,14 @@ const ChatMessageSchema = new Schema({
   message: String,
   created: {
     type: Date,
-    default: Date.now(),
+    default: Date.now,
     immutable: true,
+    get: (date: Date) => date.toLocaleDateString("en-US"),
   },
+});
+
+ChatMessageSchema.set("toJSON", {
+  getters: true,
 });
 
 export default model("ChatMessage", ChatMessageSchema);

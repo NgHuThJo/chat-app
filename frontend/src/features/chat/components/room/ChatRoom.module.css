@@ -1,10 +1,45 @@
 .default {
+  --p-scroll-container: 1rem;
+
   display: grid;
-  grid-auto-rows: 1fr auto;
-  background-color: teal;
+  grid-template-rows: 1fr auto;
+
+  .message:not(:first-child) {
+    margin-top: var(--flow-spacing);
+  }
 
   input[type="text"] {
     width: 100%;
-    padding: 1rem;
+    padding: var(--p-scroll-container);
   }
+}
+
+.message {
+  width: fit-content;
+  padding: var(--p-scroll-container);
+  border-radius: 1rem;
+  background-color: teal;
+
+  > * + * {
+    margin-top: calc(var(--flow-spacing) / 2);
+  }
+}
+
+.message-left {
+  composes: message;
+  grid-column: 1 / 2;
+}
+
+.message-right {
+  composes: message;
+  grid-column: 2 / -1;
+}
+
+.scroll-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: start;
+  max-height: 45rem;
+  padding: var(--p-scroll-container);
+  overflow-y: auto;
 }

@@ -61,10 +61,6 @@ export function ChatRoute() {
       setOnlineUsersId(users);
     };
 
-    pongSocketReducer.getMessage = (parsedData: GenericObject) => {
-      console.log("Server got message: ", parsedData);
-    };
-
     socket.current.addEventListener("open", () => {
       const data = {
         type: "addUser",
