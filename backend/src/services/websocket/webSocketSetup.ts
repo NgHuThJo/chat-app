@@ -5,7 +5,6 @@ const webSocketPort = process.env.WEBSOCKET_PORT || 8080;
 // WebSocket setup
 const wss = new WebSocketServer({ port: webSocketPort });
 const onlineUsers = new Map();
-const rooms = new Set();
 
 function getKey<K, V>(map: Map<K, V>, mapValue: V) {
   for (let [key, value] of map.entries()) {
@@ -26,16 +25,16 @@ wss.on("connection", (ws) => {
       case "addUser": {
         onlineUsers.set(data.id, ws);
 
+        const stringifiedData = JSON.stringify({
+          type: "getUsers",
+          data: {
+            users: [...onlineUsers.keys()],
+          },
+        });
+
         wss.clients.forEach((client) => {
-          if (client.readyState === WebSocket.OPEN) {
-            client.send(
-              JSON.stringify({
-                type: "getUsers",
-                data: {
-                  users: [...onlineUsers.keys()],
-                },
-              })
-            );
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(stringifiedData);
           }
         });
 
@@ -43,19 +42,16 @@ wss.on("connection", (ws) => {
       }
       case "sendMessage": {
         const { receivers, type, ...rest } = data;
-
-        console.log(receivers);
+        const stringifiedData = JSON.stringify({
+          type: "getMessage",
+          data: rest,
+        });
 
         for (let receiverId of receivers) {
-          const receiverSocket = onlineUsers.get(receiverId);
+          const receiverSocket = onlineUsers.get(receiverId._id);
 
           if (receiverSocket) {
-            receiverSocket.send(
-              JSON.stringify({
-                type: "getMessage",
-                data: rest,
-              })
-            );
+            receiverSocket.send(stringifiedData);
           }
         }
 
@@ -78,7 +74,7 @@ wss.on("connection", (ws) => {
     });
 
     wss.clients.forEach((client) => {
-      if (client.readyState === WebSocket.OPEN) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
       }
     });

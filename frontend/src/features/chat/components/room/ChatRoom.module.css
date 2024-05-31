@@ -4,10 +4,6 @@
   display: grid;
   grid-template-rows: 1fr auto;
 
-  .message:not(:first-child) {
-    margin-top: var(--flow-spacing);
-  }
-
   input[type="text"] {
     width: 100%;
     padding: var(--p-scroll-container);
@@ -17,29 +13,30 @@
 .message {
   width: fit-content;
   padding: var(--p-scroll-container);
+  border: var(--bd-width) solid hsl(var(--c-border));
   border-radius: 1rem;
-  background-color: teal;
 
   > * + * {
-    margin-top: calc(var(--flow-spacing) / 2);
+    margin-top: 0.5em;
   }
 }
 
 .message-left {
   composes: message;
-  grid-column: 1 / 2;
+  justify-self: start;
 }
 
 .message-right {
   composes: message;
-  grid-column: 2 / -1;
+  justify-self: end;
 }
 
 .scroll-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
   align-content: start;
+  gap: 2rem;
   max-height: 45rem;
   padding: var(--p-scroll-container);
   overflow-y: auto;
+  scroll-behavior: smooth;
 }

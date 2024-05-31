@@ -11,6 +11,7 @@ export function useFetch() {
   const fetchData = async (url: string, options?: GenericObject) => {
     try {
       const response = await fetch(url, {
+        credentials: "include",
         mode: "cors",
         ...options,
       });

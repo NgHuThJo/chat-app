@@ -1,5 +1,5 @@
 // Third party
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // Components
 import { Form } from "@/components/ui/form";
 // API
@@ -35,6 +35,7 @@ export function ChatRoom({
   socket,
 }: ChatRoom) {
   const [chatMessages, setChatMessages] = useState<GenericObject[]>([]);
+  const scrollRef = useRef();
 
   useEffect(() => {
     const getAllChatRoomMessages = async () => {
@@ -50,9 +51,17 @@ export function ChatRoom({
     };
 
     pongSocketReducer.getMessage = (parsedData: GenericObject) => {
-      setChatMessages((prev) => [...prev, parsedData]);
+      if (currentChat._id === parsedData.chatRoomId) {
+        setChatMessages((prev) => [...prev, parsedData]);
+      }
     };
-  }, []);
+  }, [currentChat]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }, [chatMessages]);
 
   const handleSubmit = async (
     event: React.FormEvent<HTMLFormElement>,
@@ -73,7 +82,7 @@ export function ChatRoom({
     const stringifiedData = JSON.stringify({
       type: "sendMessage",
       receivers: currentChat.members.filter(
-        (userId: string) => userId !== currentUser._id
+        (userId: string) => userId._id !== currentUser._id
       ),
       ...response,
     });
@@ -96,6 +105,7 @@ export function ChatRoom({
               ]
             }
             key={message._id}
+            ref={scrollRef}
           >
             <h3>{message.sender}</h3>
             <p>{message.message}</p>

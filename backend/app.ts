@@ -31,7 +31,12 @@ main().catch((err) => {
 // Non-route middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+app.use(
+  cors({
+    origin: process.env.PROXY_URL,
+    credentials: true,
+  })
+);
 // Authentication
 setupLocalStrategy();
 app.use(
@@ -40,6 +45,8 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "production",
       maxAge: 24 * 60 * 60 * 1000,
     },
     store: MongoStore.create({

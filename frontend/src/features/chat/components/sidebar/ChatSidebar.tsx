@@ -12,7 +12,7 @@ import styles from "./ChatSidebar.module.css";
 
 type ChatSidebar = {
   changeChat: React.Dispatch<SetStateAction<GenericObject>>;
-  chatRooms: GenericObject[];
+  chatRooms: GenericObject[][];
   setChatRooms: React.Dispatch<SetStateAction<GenericObject[]>>;
   currentUser: GenericObject;
   onlineUsersId: string[] | undefined;
@@ -42,15 +42,17 @@ export function ChatSidebar({
     setNonContacts(
       onlineUsers.filter((user) => {
         for (const room of chatRooms) {
-          if (room.members.includes(user._id)) {
-            return false;
+          for (const roomMember of room.members) {
+            if (roomMember._id === user._id) {
+              return false;
+            }
           }
         }
 
         return true;
       })
     );
-  }, [onlineUsersId]);
+  }, [chatRooms, onlineUsersId]);
 
   const handleCreateChatRoom = async (user: GenericObject) => {
     const members = {
@@ -78,14 +80,19 @@ export function ChatSidebar({
           <li
             className={resolveClassName(
               {
-                module: ["room", ...(selectedChat ? ["selected"] : [])],
+                module: [
+                  "room",
+                  ...(selectedChat === room._id ? ["selected"] : []),
+                ],
               },
               styles
             )}
             key={room._id}
             onClick={() => changeCurrentChat(room)}
           >
-            {room._id}
+            {room.members[0]._id === currentUser._id
+              ? room.members[1].username
+              : room.members[0].username}
           </li>
         ))}
       </ul>

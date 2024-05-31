@@ -11,7 +11,9 @@ const logger = debug("chat-app:chatController");
 export const getChatRooms = asyncHandler(async (req, res, next) => {
   const chatRoomList = await ChatRoom.find({
     members: { $in: [req.params.userId] },
-  }).exec();
+  })
+    .populate("members", "-password")
+    .exec();
 
   res.json(chatRoomList);
 });
@@ -21,7 +23,9 @@ export const createChatRoom = asyncHandler(async (req, res, next) => {
     members: [req.body.senderId, req.body.receiverId],
   });
 
-  res.status(201).json(newChatRoom);
+  const populatedChatRoom = await newChatRoom.populate("members", "-password");
+
+  res.status(201).json(populatedChatRoom);
 });
 
 export const getChatMessages = asyncHandler(async (req, res, next) => {

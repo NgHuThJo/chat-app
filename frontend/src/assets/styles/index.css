@@ -25,6 +25,7 @@
   --fs-body: 1rem;
 
   /* Colors */
+  --c-body: 218 11% 65%;
   --c-border: 218 20% 25%;
   --c-error: 15 50% 75%;
   --c-selected: 206 30% 54%;

@@ -1,6 +1,8 @@
 // Third party
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+// Context
+import { useWebSocketContext } from "./WebSocketContext";
 // Custom hooks
 import { useFetch } from "@/hooks/useFetch";
 // Types
@@ -23,6 +25,7 @@ function AuthContextProvider({ children }: ContextProps) {
   // State
   const [currentUser, setCurrentUser] = useState<OptionalObject>(null);
   const [loading, setLoading] = useState<Boolean>(true);
+  const { socket } = useWebSocketContext();
   // React Router
   const location = useLocation();
   const navigate = useNavigate();
@@ -105,6 +108,7 @@ function AuthContextProvider({ children }: ContextProps) {
       if (response) {
         sessionStorage.removeItem("userId");
         setCurrentUser(null);
+        socket.current.close();
         return navigate("/", { replace: true });
       }
     };

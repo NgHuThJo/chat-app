@@ -17,6 +17,7 @@ const ChatMessageSchema = new Schema({
 
 ChatMessageSchema.set("toJSON", {
   getters: true,
+  virtuals: false,
 });
 
 export default model("ChatMessage", ChatMessageSchema);
